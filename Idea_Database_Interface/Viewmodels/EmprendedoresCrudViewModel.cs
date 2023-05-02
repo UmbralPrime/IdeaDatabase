@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Idea_Database_Interface.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Idea_Database_Interface.Models
+namespace Idea_Database_Interface.Viewmodels
 {
-    public class Emprendedores
+    public class EmprendedoresCrudViewModel
     {
-        [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public DateTime Fecha { get; set; }
+        public TimeSpan FechaHora { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Teléfono { get; set; }
@@ -14,8 +15,8 @@ namespace Idea_Database_Interface.Models
         public string? MotivoDeLaConsulto { get; set; }
         public string? Incidencias { get; set; }
         public bool PlanViabilidad { get; set; }
+        public MultiSelectList? AllCategorias { get; set; }
         public List<Categoría>? Categorias { get; set; }
-        public IEnumerable<EmprendedoresCategoría>? Categorías { get; set; }
-
+        public int[] SelectedCategorias { get; set; }
     }
 }

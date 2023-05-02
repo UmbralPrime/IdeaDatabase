@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Idea_Database_Interface.Viewmodels.EmprendedoresCrudViewModel
 @{
+    ViewData["Title"] = "Crear emprendedore";
 }
+<h1 class="mt-5">@ViewData["Title"]</h1>
+<div class="row mt-8">
+    <form asp-action="CreateEmprend" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger" />
+        <div class="col-md-8">
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Fecha.Date" class="control-label">Dia</label>
+                <input type="date" value=@DateTime.Now.ToShortDateString() asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="FechaHora" class="control-label">Hora</label>
+                <input type="time" value=@DateTime.Now.Hour asp-for="FechaHora" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre)</label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Apellidos" class="control-label">@Html.DisplayNameFor(model => this.Model.Apellidos)</label>
+                <input asp-for="Apellidos" class="form-control" />
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Teléfono" class="control-label">@Html.DisplayNameFor(model => this.Model.Teléfono)</label>
+                <input asp-for="Teléfono" class="form-control" />
+                <span asp-validation-for="Teléfono" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Email" class="control-label">@Html.DisplayNameFor(model => this.Model.Email)</label>
+                <input type="email" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="MotivoDeLaConsulto" class="control-label">@Html.DisplayNameFor(model => this.Model.MotivoDeLaConsulto)</label>
+                <input asp-for="MotivoDeLaConsulto" class="form-control" />
+                <span asp-validation-for="MotivoDeLaConsulto" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Incidencias" class="control-label">@Html.DisplayNameFor(model => this.Model.Incidencias)</label>
+                <input asp-for="Incidencias" class="form-control" />
+                <span asp-validation-for="Incidencias" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="PlanViabilidad" class="form-check-label">Plan de Viailidad</label>
+                <input type="checkbox" asp-for="PlanViabilidad" class="form-check-input" />
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="AllCategorias" class="control-label">Categorías</label>
+                <select class="form-control" asp-items="Model.AllCategorias" asp-for="SelectedCategorias"></select>
+                <asp:ListBox></asp:ListBox>
+            </div>
+            <br />
+            <div class="form-group" style="padding: 10px">
+                <input type="submit" value="Crear" class="btn" style="background-color: aqua !important; color: white !important;" />
+                <a asp-action="Index" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+

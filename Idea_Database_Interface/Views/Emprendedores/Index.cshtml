@@ -30,7 +30,7 @@
                 <a asp-action="CreateEmprend" class="btn input-group" style="background-color: darkorange">Crear una nuevo emprendedor</a>
             </div>
             <div class="col-md-3">
-                <a asp-action="Categorias" class="btn input-group" style="background-color: darkorange">Categorías</a>
+                <a asp-controller="Categorias" asp-action="Index" class="btn input-group" style="background-color: darkorange">Categorías</a>
             </div>
             <p class="text-end">Total: @Model.Emprendedores.Count() Emprendedores</p>
         </div>
@@ -45,7 +45,7 @@
                 <th scope="col" class="d-none d-sm-table-cell">Dia</th>
                 <th scope="col" class="d-none d-sm-table-cell">Hora</th>
                 <th scope="col" class="d-none d-sm-table-cell">Teléfono</th>
-                <th scope ="col" class="d-none d-sm-table-cell">Email</th>
+                <th scope="col" class="d-none d-sm-table-cell">Email</th>
                 <th scope="col" class="d-none d-sm-table-cell">Motivo de la consulto</th>
                 <th scope="col" class="d-none d-sm-table-cell">Incidencias</th>
                 <th scope="col" class="d-none d-sm-table-cell">Categorías</th>
@@ -54,20 +54,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Emprendedores) {
+            @foreach (var item in Model.Emprendedores)
+            {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem=>item.Nombre + " "+ item.Apellidos)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Fecha.Date)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Fecha.TimeOfDay)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Teléfono)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Email)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.MotivoDeLaConsulto)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Incidencias)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Categorías)</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.PlanViabilidad)</td>
+                    <td>@item.Nombre @item.Apellidos</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Fecha.Date.ToString("d")</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Fecha.TimeOfDay</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Teléfono</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Email</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.MotivoDeLaConsulto</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Incidencias</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Categorías</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.PlanViabilidad</td>
                     <td>
                         <a class="btn" style="background-color: dodgerblue" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-                        </td>
+                    </td>
 
                 </tr>
             }
