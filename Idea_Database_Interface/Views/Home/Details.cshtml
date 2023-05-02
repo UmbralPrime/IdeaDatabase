@@ -1,0 +1,18 @@
+﻿@model Idea_Database_Interface.Viewmodels.EmpresaDetailsView
+@{
+    ViewData["Title"] = "Empresas detalles página";
+}
+<h1>@Model.Empresa.Nombre</h1>
+<br/>
+<p>Fecha de alta: @Model.Empresa.FechaDeAlta</p>
+<p>CIF: @Model.Empresa.CIF</p>
+<p>Tamaño: @Model.Empresa.Tamaño</p>
+<p>CNAE: @Model.Empresa.CNAE</p>
+<p>Detalle CNAE: @Model.Empresa.DetalleCNAE</p>
+<p>Dirección: @Model.Empresa.Calle @Model.Empresa.Número, @Model.Empresa.CódigoPostal @Model.Empresa.Provincia, @Model.Empresa.Municipio @Model.Empresa.Localidad</p>
+<p>Teléfono: @Model.Empresa.Teléfono | @Model.Empresa.Teléfono2</p>
+<p>Fax: @Model.Empresa.Fax</p>
+<p>Email: @Model.Empresa.Email</p>
+<p>Web: @Model.Empresa.Web</p>
+<p>Contact: @Model.Empresa.Contacto</p>
+<a class="btn" style="background-color: dodgerblue" asp-action="UpdateEmpr" asp-route-id="@Model.Empresa.EmprId">Actualización</a>

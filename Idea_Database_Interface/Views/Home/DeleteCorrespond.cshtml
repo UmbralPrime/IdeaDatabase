@@ -1,0 +1,10 @@
+﻿@model Idea_Database_Interface.Viewmodels.UpdateCorrespondViewModel
+@{
+
+}
+<h2>Estás seguro de que quieres borrar el mensaje de @Model.Remitente sobre @Model.Cuando?</h2>
+<form asp-action="DeleteCorrespond" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" />
+    <a asp-action="CorrespondOverview" asp-route-id="@Model.EmprId" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
+    <input type="submit" value="Borrar" asp-action="DeleteCorrespond" asp-route-id="@Model.CorrespondId" class="btn btn-danger" />
+</form>

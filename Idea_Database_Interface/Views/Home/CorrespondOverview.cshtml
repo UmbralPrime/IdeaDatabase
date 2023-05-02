@@ -1,0 +1,26 @@
+﻿@model Idea_Database_Interface.Viewmodels.CorrespondListViewModel
+@{
+
+}
+<h1>Correspondencias @Model.Empresa.Nombre</h1>
+<div class="text-center">
+    <br />
+    <a asp-action="CreateCorrespond" class="btn btn-success"  asp-route-id=@Model.EmprId>Crear mensaje</a>
+    <br />
+    <div class="row" style="padding: 3em">
+        @foreach (var item in Model.Correspondencias)
+        {
+            <div class="col-md-4 flex-column" style="padding: 2em;">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Cuando</h5>
+                        <h6 class="card-subtitle">@item.Remitente</h6>
+                        <p class="card-text">@item.Mensaje</p>
+                        <a asp-action="DetailsCorrespond" class="btn btn-info" asp-route-id="@item.CorrespondId">Detalles</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

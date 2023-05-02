@@ -1,0 +1,73 @@
+﻿@model Idea_Database_Interface.Viewmodels.CompaniesListViewModel
+@{
+    ViewData["Title"] = "Empresas página";
+}
+
+<div>
+    <h1 class="display-4">Empresas</h1>
+    <br />
+    <form asp-action="Filter" method="post">
+        <div class="container">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <select asp-for="FilterVal" class="form-select flex-column" id="selectFilter">
+                        <option selected value="1">Nombre</option>
+                        <option value="2">CIF</option>
+                        <option value="3">Teléfono</option>
+                        <option value="4">Email</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" value="" class="form-control" id="textFilter" asp-for="FilterText" />
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" value="Filtro" class="btn input-group" style="background-color: darkorange" />
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" class="btn input-group" style="background-color: orangered">Restablecer</a>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-md-center">
+                <a asp-action="CreateEmpr" class="btn col-md-3" style="background-color: darkorange">Crear una nueva empresa</a>
+                <p class="text-end">Total: @Model.Empresas.Count() Empresas</p>
+            </div>
+        </div>
+
+    </form>
+    <div class="text-start">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th scope="col" class="d-none d-sm-table-cell">CIF</th>
+                    <th scope="col" class="d-none d-sm-table-cell">FechaDeAlta</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Email</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Teléfono</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var comp in Model.Empresas)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem=>comp.Nombre)</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>comp.CIF)</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>comp.FechaDeAlta)</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>comp.Email)</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>comp.Teléfono)</td>
+                        <td scope="col" class="d-none d-sm-table-cell"><a class="btn" style="background-color: dodgerblue" asp-action="Details" asp-route-id="@comp.EmprId">Detalles</a></td>
+                        @*This button is to go to the messages of the company, while programming i used correspondencia and not actuaciones*@
+                        <td scope="col" class="d-none d-sm-table-cell"><a class="btn" style="background-color: dodgerblue" asp-action="CorrespondOverview" asp-route-id="@comp.EmprId">Actuaciones</a></td>
+                        <td scope="col" class="d-block d-sm-none">
+                            <a class="btn m-1" style="background-color: dodgerblue" asp-action="Details" asp-route-id="@comp.EmprId">Detalles</a>
+                            <a class="btn m-1" style="background-color: dodgerblue" asp-action="CorrespondOverview" asp-route-id="@comp.EmprId">Actuaciones</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

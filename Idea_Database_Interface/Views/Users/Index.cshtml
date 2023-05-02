@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Página de usuarios";
+}
+@model Idea_Database_Interface.Viewmodels.UsuariosListViewModel
+<h1>@ViewData["Title"]</h1>
+
+<p></p>
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Users[0].UserName)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Users[0].Email)
+            </th>
+            <th colspan="2" scope="col">
+                Derechos de administrador
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>
+                    @item.UserName
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @if (!await Model.UserManager.IsInRoleAsync(item, "admin"))
+                    {
+                        <a class="btn btn-primary col-md-6" asp-action="UserAddAdmin" asp-route-id="@item.Id">Hacer admin</a>
+                    }
+                    else
+                    {
+                        <p>Admin</p>
+                    }
+                </td>
+                <td>
+                    <form asp-action="DeleteUser" method="post">
+                        <input type="submit" class="btn btn-danger col-md-6" asp-action="DeleteUser" asp-route-id="@item.Id" value="Borrar" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

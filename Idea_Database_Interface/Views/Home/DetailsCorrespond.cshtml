@@ -1,0 +1,14 @@
+﻿@model Idea_Database_Interface.Viewmodels.CorrespondDetailsViewModel
+@{
+    ViewData["Title"] = "Correspondencia detalles página";
+}
+<h3>Correspondencia</h3>
+<br />
+<p>Cuando: @Model.Cuando</p>
+<p>Remitente: @Model.Remitente</p>
+<p>A quién: @Model.Empresa.Nombre</p>
+<p>Mensaje: @Model.Mensaje</p>
+<br/>
+<a class="btn btn-primary" asp-action="UpdateCorrespond" asp-route-id="@Model.CorrespondId">Actualización</a>
+<a asp-action="DeleteCorrespond" asp-route-id="@Model.CorrespondId" class="btn btn-danger">Borrar</a>
+<a asp-action="CorrespondOverview" asp-route-id="@Model.EmprId" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
