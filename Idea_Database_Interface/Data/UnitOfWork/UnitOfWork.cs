@@ -10,6 +10,7 @@ namespace Idea_Database_Interface.Data.UnitOfWork
         private IGenericRepository<Empresa> empresaRepo;
         private IGenericRepository<Correspondencia> correspondenciaRepo;
         private IGenericRepository<Emprendedores> emprendedoresRepo;
+        private IGenericRepository<Categoría> categoriaRepo;
         public UnitOfWork(IdeaDBContext dBContext)
         {
             _context = dBContext;
@@ -44,6 +45,15 @@ namespace Idea_Database_Interface.Data.UnitOfWork
                     this.emprendedoresRepo = new GenericRepository<Emprendedores>(_context);
                 }
                 return emprendedoresRepo;
+            }
+        }
+        public IGenericRepository<Categoría> CategoriaRepository
+        {
+            get
+            {
+                if (categoriaRepo == null)
+                    this.categoriaRepo = new GenericRepository<Categoría>(_context);
+                return categoriaRepo;
             }
         }
 

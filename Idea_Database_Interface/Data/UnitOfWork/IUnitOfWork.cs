@@ -8,6 +8,7 @@ namespace Idea_Database_Interface.Data.UnitOfWork
         IGenericRepository<Empresa> EmpresaRepository { get; }
         IGenericRepository<Correspondencia> CorrespondenciaRepository { get; }
         IGenericRepository<Emprendedores> EmprendedoresRepository { get; }
+        IGenericRepository<Categoría> CategoriaRepository { get; }
         Task Save();
     }
 }
