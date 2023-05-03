@@ -47,8 +47,6 @@
                 <th scope="col" class="d-none d-sm-table-cell">Teléfono</th>
                 <th scope="col" class="d-none d-sm-table-cell">Email</th>
                 <th scope="col" class="d-none d-sm-table-cell">Motivo de la consulto</th>
-                <th scope="col" class="d-none d-sm-table-cell">Incidencias</th>
-                <th scope="col" class="d-none d-sm-table-cell">Categorías</th>
                 <th scope="col" class="d-none d-sm-table-cell">Plan de viabilidad</th>
                 <th></th>
             </tr>
@@ -63,9 +61,20 @@
                     <td scope="col" class="d-none d-sm-table-cell">@item.Teléfono</td>
                     <td scope="col" class="d-none d-sm-table-cell">@item.Email</td>
                     <td scope="col" class="d-none d-sm-table-cell">@item.MotivoDeLaConsulto</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@item.Incidencias</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@item.Categorías</td>
-                    <td scope="col" class="d-none d-sm-table-cell">@item.PlanViabilidad</td>
+                    <td scope="col" class="d-none d-sm-table-cell">
+                        @if (item.PlanViabilidad)
+                        {
+                            <div class="text-center">
+                                <p>&#10004</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <p>&times</p>
+                            </div>
+                        }
+                    </td>
                     <td>
                         <a class="btn" style="background-color: dodgerblue" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
                     </td>

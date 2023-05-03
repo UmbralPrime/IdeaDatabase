@@ -14,16 +14,49 @@ namespace Idea_Database_Interface.Controllers
     {
         private readonly IUnitOfWork _uow;
         public EmprendedoresController(IUnitOfWork uow) { _uow = uow; }
+        public List<Categoría> Categorias;
 
         public IActionResult Index()
         {
+            Categorias = _uow.CategoriaRepository.GetAll().ToList();
+            IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías);
             EmprendedoresListViewModel vm = new()
             {
-                Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList(),
+                Emprendedores = emprendes,
                 FilterText = "",
                 FilterVal = 1
             };
             return View(vm);
+
+        }
+        public IActionResult Filter(CompaniesListViewModel model)
+        {
+            EmprendedoresListViewModel vm = new EmprendedoresListViewModel()
+            {
+                Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList(),
+                FilterText = string.Empty,
+                FilterVal = 1
+            };
+            if (model.FilterText != null)
+            {
+
+                model.FilterText = model.FilterText.ToLower();
+                switch (model.FilterVal)
+                {
+                    case 1:
+                        vm.Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList().Where(x => x.Nombre.ToLower().Contains(model.FilterText));
+                        return View("Index", vm);
+                    case 2:
+                        vm.Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList().Where(x => x.Teléfono.Contains(model.FilterText));
+                        return View("Index", vm);
+                    case 3:
+                        vm.Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList().Where(x => x.Email.ToLower().Contains(model.FilterText));
+                        return View("Index", vm);
+                    default:
+                        return View("Index", vm);
+                }
+            }
+            return View("Index", vm);
         }
         public IActionResult CreateEmprend()
         {
@@ -52,15 +85,22 @@ namespace Idea_Database_Interface.Controllers
                 });
                 await _uow.Save();
                 Emprendedores updateCat = _uow.EmprendedoresRepository.GetAll().Where(p => p.Fecha == model.Fecha + model.FechaHora).FirstOrDefault();
-                if (updateCat != null)
+                if (updateCat != null && model.SelectedCategorias != null)
                 {
                     if (model.Categorias == null)
-                        model.Categorias = new List<Categoría>();
+                        model.Categorias = new List<EmprendedoresCategoría>();
                     foreach (int item in model.SelectedCategorias)
                     {
-                        model.Categorias.Add(await _uow.CategoriaRepository.GetById(item));
+                        EmprendedoresCategoría tempAdd = new()
+                        {
+                            Emprendedores = updateCat,
+                            IdEmprendedores = updateCat.Id,
+                            IdCategoría = item,
+                            Categoría = await _uow.CategoriaRepository.GetById(item),
+                        };
+                        model.Categorias.Add(tempAdd);
                     }
-                    updateCat.Categorias = model.Categorias;
+                    updateCat.Categorías = model.Categorias;
                     _uow.EmprendedoresRepository.Update(updateCat);
                     await _uow.Save();
                 }
@@ -75,8 +115,12 @@ namespace Idea_Database_Interface.Controllers
             }
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            EmprendedoresDetailsViewModel vm = new EmprendedoresDetailsViewModel()
+            {
+                Emprendedores = await _uow.EmprendedoresRepository.GetById(id)
+            };
             return View();
         }
     }

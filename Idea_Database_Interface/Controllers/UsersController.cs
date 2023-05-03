@@ -59,10 +59,10 @@ namespace Idea_Database_Interface.Controllers
         //gives the admin role to the selected user
         public async Task<IActionResult> UserAddAdmin(string id)
         {
-            IdentityUser user = await _userManager.FindByIdAsync(id);
             IdentityRole role = await _roleManager.FindByNameAsync("admin");
             //if the admin role doesnt exist, creates it
-            if(role == null) { await _roleManager.CreateAsync(new IdentityRole("admin")); }
+            if (role == null) { await _roleManager.CreateAsync(new IdentityRole("admin")); role = await _roleManager.FindByNameAsync("admin"); }
+            IdentityUser user = await _userManager.FindByIdAsync(id);            
             IdentityResult result = await _userManager.AddToRoleAsync(user, role.Name);
             return RedirectToAction("Index");
         }

@@ -16,7 +16,7 @@ namespace Idea_Database_Interface.Viewmodels
         public string? Incidencias { get; set; }
         public bool PlanViabilidad { get; set; }
         public MultiSelectList? AllCategorias { get; set; }
-        public List<Categoría>? Categorias { get; set; }
-        public int[] SelectedCategorias { get; set; }
+        public List<EmprendedoresCategoría>? Categorias { get; set; }
+        public int[]? SelectedCategorias { get; set; }
     }
 }
