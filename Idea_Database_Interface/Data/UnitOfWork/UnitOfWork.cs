@@ -11,6 +11,7 @@ namespace Idea_Database_Interface.Data.UnitOfWork
         private IGenericRepository<Correspondencia> correspondenciaRepo;
         private IGenericRepository<Emprendedores> emprendedoresRepo;
         private IGenericRepository<Categoría> categoriaRepo;
+        private IGenericRepository<EmprendedoresCategoría> emprCatRepo;
         public UnitOfWork(IdeaDBContext dBContext)
         {
             _context = dBContext;
@@ -56,7 +57,15 @@ namespace Idea_Database_Interface.Data.UnitOfWork
                 return categoriaRepo;
             }
         }
-
+        public IGenericRepository<EmprendedoresCategoría> EmprendedoresCategoriaRepository
+        {
+            get
+            {
+                if(emprCatRepo == null)
+                    this.emprCatRepo = new GenericRepository<EmprendedoresCategoría>( _context);
+                return emprCatRepo;
+            }
+        }
         public async Task Save()
         {
             await _context.SaveChangesAsync();

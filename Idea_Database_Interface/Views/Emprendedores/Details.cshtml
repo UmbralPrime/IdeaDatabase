@@ -1,1 +1,34 @@
-﻿<h1>Poep</h1>
+﻿@model Idea_Database_Interface.Viewmodels.EmprendedoresDetailsViewModel
+@{
+    ViewData["Title"] = "Emprendedores detalles página";
+}
+<h1>@Model.Emprendedores.Nombre @Model.Emprendedores.Apellidos</h1>
+<br />
+<p>Dia: @Model.Emprendedores.Fecha.Date.ToString("d")</p>
+<p>Hora: @Model.Emprendedores.Fecha.TimeOfDay</p>
+<p>Teléfono: @Model.Emprendedores.Teléfono</p>
+<p>Email: @Model.Emprendedores.Email</p>
+<p>Motivo de la consulta: @Model.Emprendedores.MotivoDeLaConsulto</p>
+<p>Incidencias: @Model.Emprendedores.Incidencias</p>
+<p>
+    Plan de viabilidad: @if (Model.Emprendedores.PlanViabilidad)
+    {
+        <span>&#10004</span>
+    }
+    else
+    {
+        <span>&times</span>
+    }
+</p>
+<div class="col-md-4">
+    <p>Categorías: </p>
+    <ul class="list-group">
+        @if (Model.Emprendedores.Categorías != null)
+            @foreach (var cat in Model.Emprendedores.Categorías)
+            {
+                <li class="list-group-item">@cat.Categoría.Nombre</li>
+            }
+    </ul>
+</div>
+</br>
+<a class="btn" style="background-color: dodgerblue" asp-action="UpdateEmprend" asp-route-id="@Model.Emprendedores.Id">Actualización</a>

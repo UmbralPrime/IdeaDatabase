@@ -1,10 +1,10 @@
 ﻿@model Idea_Database_Interface.Viewmodels.EmprendedoresCrudViewModel
 @{
-    ViewData["Title"] = "Crear emprendedore";
+    ViewData["Title"] = "Actualizar emprendedore";
 }
 <h1 class="mt-5">@ViewData["Title"]</h1>
 <div class="row mt-8">
-    <form asp-action="CreateEmprend" method="post">
+    <form asp-action="updateEmprend" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
@@ -57,11 +57,12 @@
             </div>
             <br />
             <div class="form-group" style="padding: 10px">
-                <input type="submit" value="Crear" class="btn" style="background-color: aqua !important; color: white !important;" />
+                <input type="submit" value="Actualizar" class="btn" style="background-color: aqua !important; color: white !important;" />
                 <a asp-action="Index" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
             </div>
         </div>
     </form>
 </div>
+
 
 
