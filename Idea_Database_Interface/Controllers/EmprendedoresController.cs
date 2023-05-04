@@ -4,7 +4,9 @@ using Idea_Database_Interface.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System.Data;
 
 namespace Idea_Database_Interface.Controllers
@@ -84,7 +86,8 @@ namespace Idea_Database_Interface.Controllers
                     PlanViabilidad = model.PlanViabilidad
                 });
                 await _uow.Save();
-                Emprendedores updateCat = _uow.EmprendedoresRepository.GetAll().Where(p => p.Fecha == model.Fecha + model.FechaHora).FirstOrDefault();
+                Emprendedores updateCat = _uow.EmprendedoresRepository.GetAll().Where(p => p.Fecha == model.Fecha + model.FechaHora && p.Nombre == model.Nombre).FirstOrDefault();
+                IQueryable<EmprendedoresCategoría> check = _uow.EmprendedoresCategoriaRepository.GetAll();
                 if (updateCat != null && model.SelectedCategorias != null)
                 {
                     if (model.Categorias == null)
@@ -98,7 +101,8 @@ namespace Idea_Database_Interface.Controllers
                             IdCategoría = item,
                             Categoría = await _uow.CategoriaRepository.GetById(item),
                         };
-                        model.Categorias.Add(tempAdd);
+                        if (check.Where(x => x.IdCategoría == tempAdd.IdCategoría && x.IdEmprendedores == tempAdd.IdEmprendedores) == null)
+                            model.Categorias.Add(tempAdd);
                     }
                     updateCat.Categorías = model.Categorias;
                     _uow.EmprendedoresRepository.Update(updateCat);
@@ -174,6 +178,7 @@ namespace Idea_Database_Interface.Controllers
                 });
                 await _uow.Save();
                 Emprendedores updateCat = await _uow.EmprendedoresRepository.GetById((int)model.Id);
+                IQueryable<EmprendedoresCategoría> check = _uow.EmprendedoresCategoriaRepository.GetAll();
                 if (updateCat != null && model.SelectedCategorias != null)
                 {
                     if (model.Categorias == null)
@@ -187,7 +192,9 @@ namespace Idea_Database_Interface.Controllers
                             IdCategoría = item,
                             Categoría = await _uow.CategoriaRepository.GetById(item),
                         };
-                        model.Categorias.Add(tempAdd);
+                        IQueryable<EmprendedoresCategoría> chenck = check.Where(x => x.IdCategoría == tempAdd.IdCategoría && x.IdEmprendedores == tempAdd.IdEmprendedores);
+                        if (check.Where(x => x.IdCategoría == tempAdd.IdCategoría && x.IdEmprendedores == tempAdd.IdEmprendedores).Count() == 0)
+                            model.Categorias.Add(tempAdd);
                     }
                     updateCat.Categorías = model.Categorias;
                     _uow.EmprendedoresRepository.Update(updateCat);
@@ -202,6 +209,29 @@ namespace Idea_Database_Interface.Controllers
                 model.AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre");
                 return View(model);
             }
+        }
+        public async Task<IActionResult> DeleteEmprend(int id)
+        {
+            Emprendedores temp = await _uow.EmprendedoresRepository.GetById(id);
+            EmprendedoresCrudViewModel vm = new EmprendedoresCrudViewModel()
+            {
+                Id = id,
+                Nombre = temp.Nombre,
+                Apellidos = temp.Apellidos
+            };
+            return View(vm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteEmprend(int id, EmprendedoresCrudViewModel vm)
+        {
+            Emprendedores empr = await _uow.EmprendedoresRepository.GetById(id);
+            if (empr != null)
+            {
+                _uow.EmprendedoresRepository.Delete(empr);
+                await _uow.Save();
+            }
+            return RedirectToAction("Index");
         }
     }
 }

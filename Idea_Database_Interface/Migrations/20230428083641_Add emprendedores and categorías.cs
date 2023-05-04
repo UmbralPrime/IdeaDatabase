@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -67,8 +67,8 @@ namespace Idea_Database_Interface.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmprendedoresCategorías_Emprendedores_IdCategoría",
-                        column: x => x.IdCategoría,
+                        name: "FK_EmprendedoresCategorías_Emprendedores_IdEmprendedores",
+                        column: x => x.IdEmprendedores,
                         principalSchema: "IdeaDatabase",
                         principalTable: "Emprendedores",
                         principalColumn: "Id",

@@ -1,0 +1,11 @@
+﻿@model Idea_Database_Interface.Viewmodels.EmprendedoresCrudViewModel
+@{
+
+}
+<h2>Estás seguro de que quieres borrar el emprendedores de @Model.Nombre @Model.Apellidos?</h2>
+<form asp-action="DeleteEmprend" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" />
+    <a asp-controller="Emprendedores" asp-action="Details" asp-route-id="@Model.Id" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
+    <input type="submit" value="Borrar" asp-action="DeleteEmprend" asp-route-id="@Model.Id" class="btn btn-danger" />
+</form>
+

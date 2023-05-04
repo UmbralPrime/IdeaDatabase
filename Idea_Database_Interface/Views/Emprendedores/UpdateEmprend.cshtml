@@ -9,12 +9,12 @@
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
                 <label asp-for="Fecha.Date" class="control-label">Dia</label>
-                <input type="date" value=@DateTime.Now.ToShortDateString() asp-for="Fecha" class="form-control" />
+                <input type="date" value=@Model.Fecha.Date.ToString("yyyy-MM-dd") asp-for="Fecha" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
                 <label asp-for="FechaHora" class="control-label">Hora</label>
-                <input type="time" value=@DateTime.Now.Hour asp-for="FechaHora" class="form-control" />
+                <input type="time" value=@Model.Fecha.Hour.ToString() asp-for="FechaHora" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
