@@ -48,8 +48,17 @@
                 <span asp-validation-for="Incidencias" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
+                <label asp-for="Observaciones" class="control-label">@Html.DisplayNameFor(model => this.Model.Observaciones)</label>
+                <input type="text" asp-for="Observaciones" class="form-control" />
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
                 <label asp-for="PlanViabilidad" class="form-check-label">Plan de Viailidad</label>
                 <input type="checkbox" asp-for="PlanViabilidad" class="form-check-input" />
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Terminado" class="form-check-label">Terminado</label>
+                <input type="checkbox" asp-for="Terminado" class="form-check-input" />
             </div>
             <div class="form-group" style="padding: 10px">
                 <label asp-for="AllCategorias" class="control-label">Categorías</label>

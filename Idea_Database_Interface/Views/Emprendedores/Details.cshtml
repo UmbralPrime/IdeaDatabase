@@ -10,8 +10,19 @@
 <p>Email: @Model.Emprendedores.Email</p>
 <p>Motivo de la consulta: @Model.Emprendedores.MotivoDeLaConsulto</p>
 <p>Incidencias: @Model.Emprendedores.Incidencias</p>
+<p>Observaciones: @Model.Emprendedores.Observaciones</p>
 <p>
     Plan de viabilidad: @if (Model.Emprendedores.PlanViabilidad)
+    {
+        <span>&#10004</span>
+    }
+    else
+    {
+        <span>&times</span>
+    }
+</p>
+<p>
+    Terminado: @if (Model.Emprendedores.Terminado)
     {
         <span>&#10004</span>
     }

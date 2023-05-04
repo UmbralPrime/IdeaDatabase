@@ -87,7 +87,9 @@ namespace Idea_Database_Interface.Controllers
                     Email = model.Email,
                     MotivoDeLaConsulto = model.MotivoDeLaConsulto,
                     Incidencias = model.Incidencias,
-                    PlanViabilidad = model.PlanViabilidad
+                    Observaciones = model.Observaciones,
+                    PlanViabilidad = model.PlanViabilidad,
+                    Terminado= model.Terminado
                 });
                 await _uow.Save();
                 //The following code will add the categories to the freshly created entrepeneur.
@@ -159,8 +161,10 @@ namespace Idea_Database_Interface.Controllers
                 Fecha = temp.Fecha,
                 Incidencias = temp.Incidencias,
                 MotivoDeLaConsulto = temp.Incidencias,
+                Observaciones = temp.Observaciones,
                 PlanViabilidad = temp.PlanViabilidad,
                 Teléfono = temp.Teléfono,
+                Terminado = temp.Terminado,
                 AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre"),
                 SelectedCategorias = selection
             };
@@ -183,7 +187,9 @@ namespace Idea_Database_Interface.Controllers
                     Email = model.Email,
                     MotivoDeLaConsulto = model.MotivoDeLaConsulto,
                     Incidencias = model.Incidencias,
-                    PlanViabilidad = model.PlanViabilidad
+                    Observaciones = model.Observaciones,
+                    PlanViabilidad = model.PlanViabilidad,
+                    Terminado = model.Terminado
                 });
                 await _uow.Save();
                 Emprendedores updateCat = await _uow.EmprendedoresRepository.GetById((int)model.Id);

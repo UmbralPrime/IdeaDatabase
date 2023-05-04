@@ -13,7 +13,9 @@ namespace Idea_Database_Interface.Models
         public string Email { get; set; }
         public string? MotivoDeLaConsulto { get; set; }
         public string? Incidencias { get; set; }
+        public string? Observaciones { get; set; }
         public bool PlanViabilidad { get; set; }   
+        public bool Terminado { get; set; }
         public ICollection <EmprendedoresCategoría>? Categorías { get; set; }
         public List<Categoría> NamedCategories { get; set; }
 

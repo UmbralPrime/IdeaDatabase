@@ -48,6 +48,7 @@
                 <th scope="col" class="d-none d-sm-table-cell">Email</th>
                 <th scope="col" class="d-none d-sm-table-cell">Motivo de la consulto</th>
                 <th scope="col" class="d-none d-sm-table-cell">Plan de viabilidad</th>
+                <th scope="col" class="d-none d-sm-table-cell">Terminado</th>
                 <th></th>
             </tr>
         </thead>
@@ -63,6 +64,20 @@
                     <td scope="col" class="d-none d-sm-table-cell">@item.MotivoDeLaConsulto</td>
                     <td scope="col" class="d-none d-sm-table-cell">
                         @if (item.PlanViabilidad)
+                        {
+                            <div class="text-center">
+                                <p>&#10004</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <p>&times</p>
+                            </div>
+                        }
+                    </td>
+                    <td scope="col" class="d-none d-sm-table-cell">
+                        @if (item.Terminado)
                         {
                             <div class="text-center">
                                 <p>&#10004</p>
