@@ -1,10 +1,13 @@
 ﻿using Idea_Database_Interface.Data.UnitOfWork;
 using Idea_Database_Interface.Models;
 using Idea_Database_Interface.Viewmodels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Idea_Database_Interface.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("Emprendedores/Categorias/{action}")]
     public class CategoriasController : Controller
     {

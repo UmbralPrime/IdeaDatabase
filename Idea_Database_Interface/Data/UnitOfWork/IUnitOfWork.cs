@@ -10,6 +10,7 @@ namespace Idea_Database_Interface.Data.UnitOfWork
         IGenericRepository<Emprendedores> EmprendedoresRepository { get; }
         IGenericRepository<Categoría> CategoriaRepository { get; }
         IGenericRepository<EmprendedoresCategoría> EmprendedoresCategoriaRepository { get; }
+        IGenericRepository<Comercios> ComerciosRepository { get; }
         Task Save();
     }
 }
