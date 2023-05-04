@@ -33,6 +33,7 @@ namespace Idea_Database_Interface.Controllers
         }
         public IActionResult Filter(CompaniesListViewModel model)
         {
+            //This is the same filter that is used in the companies page
             EmprendedoresListViewModel vm = new EmprendedoresListViewModel()
             {
                 Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList(),
@@ -64,6 +65,9 @@ namespace Idea_Database_Interface.Controllers
         {
             EmprendedoresCrudViewModel vm = new()
             {
+                //This code will fill the select box with all the categories.
+                //It will show the name and the value that is connected is the id,
+                //so it can be used to create the association link with the entrepeneur
                 AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre")
             };
             return View(vm);
@@ -86,8 +90,12 @@ namespace Idea_Database_Interface.Controllers
                     PlanViabilidad = model.PlanViabilidad
                 });
                 await _uow.Save();
-                Emprendedores updateCat = _uow.EmprendedoresRepository.GetAll().Where(p => p.Fecha == model.Fecha + model.FechaHora && p.Nombre == model.Nombre).FirstOrDefault();
-                IQueryable<EmprendedoresCategoría> check = _uow.EmprendedoresCategoriaRepository.GetAll();
+                //The following code will add the categories to the freshly created entrepeneur.
+                //It will also check to see if the categories are already linked.
+                //Wich is redundant, so i will comment it
+                Emprendedores updateCat = _uow.EmprendedoresRepository.GetAll()
+                    .Where(p => p.Fecha == model.Fecha + model.FechaHora && p.Nombre == model.Nombre).FirstOrDefault();
+                //IQueryable<EmprendedoresCategoría> check = _uow.EmprendedoresCategoriaRepository.GetAll();
                 if (updateCat != null && model.SelectedCategorias != null)
                 {
                     if (model.Categorias == null)
@@ -101,8 +109,8 @@ namespace Idea_Database_Interface.Controllers
                             IdCategoría = item,
                             Categoría = await _uow.CategoriaRepository.GetById(item),
                         };
-                        if (check.Where(x => x.IdCategoría == tempAdd.IdCategoría && x.IdEmprendedores == tempAdd.IdEmprendedores) == null)
-                            model.Categorias.Add(tempAdd);
+                        //if (check.Where(x => x.IdCategoría == tempAdd.IdCategoría && x.IdEmprendedores == tempAdd.IdEmprendedores) == null)
+                        model.Categorias.Add(tempAdd);
                     }
                     updateCat.Categorías = model.Categorias;
                     _uow.EmprendedoresRepository.Update(updateCat);
@@ -132,6 +140,7 @@ namespace Idea_Database_Interface.Controllers
         public async Task<IActionResult> UpdateEmprend(int id)
         {
             Emprendedores temp = await _uow.EmprendedoresRepository.GetById(id);
+            //this code is to show the selected categories, but it doesnt work yet
             int[] selection = new int[] { };
             if (temp.Categorías != null)
             {
@@ -179,6 +188,7 @@ namespace Idea_Database_Interface.Controllers
                 await _uow.Save();
                 Emprendedores updateCat = await _uow.EmprendedoresRepository.GetById((int)model.Id);
                 IQueryable<EmprendedoresCategoría> check = _uow.EmprendedoresCategoriaRepository.GetAll();
+                //checks to see if the association is already in the database, otherwise it will add it
                 if (updateCat != null && model.SelectedCategorias != null)
                 {
                     if (model.Categorias == null)
