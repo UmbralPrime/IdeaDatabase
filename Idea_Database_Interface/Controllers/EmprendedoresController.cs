@@ -21,7 +21,7 @@ namespace Idea_Database_Interface.Controllers
         public IActionResult Index()
         {
             Categorias = _uow.CategoriaRepository.GetAll().ToList();
-            IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías);
+            IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías).OrderByDescending(x=>x.Fecha);
             EmprendedoresListViewModel vm = new()
             {
                 Emprendedores = emprendes,
