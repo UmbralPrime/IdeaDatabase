@@ -1,0 +1,102 @@
+﻿@model Idea_Database_Interface.Viewmodels.CategoriaEmprendListViewModel
+@{
+    ViewData["Title"] = "Emprendedores página";
+}
+<h1 class="display-4">@Model.Categoría.Nombre</h1>
+<br />
+<form asp-action="Filter" method="post">
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <select asp-for="FilterVal" class="form-select flex-column" id="selectFilter">
+                    <option selected value="1">Nombre</option>
+                    <option value="2">Teléfono</option>
+                    <option value="3">Email</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="text" value="" class="form-control" id="textFilter" asp-for="FilterText" />
+            </div>
+            <div class="col-md-3">
+                <input type="submit" value="Filtro" class="btn input-group" style="background-color: darkorange" />
+            </div>
+            <div class="col-md-3">
+                <a asp-action="Index" class="btn input-group" style="background-color: orangered">Restablecer</a>
+            </div>
+        </div>
+        <br />
+        <div class="row justify-content-md-center">
+            <div class="col-md-3">
+                <a asp-action="CreateEmprend" class="btn input-group" style="background-color: darkorange">Crear una nuevo emprendedor</a>
+            </div>
+            <div class="col-md-3">
+                <a asp-controller="Categorias" asp-action="Index" class="btn input-group" style="background-color: darkorange">Categorías</a>
+            </div>
+            <p class="text-end">Total: @Model.Emprendedores.Count() Emprendedores</p>
+        </div>
+    </div>
+
+</form>
+<div>
+    <table class="table w-auto">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th scope="col" class="d-none d-sm-table-cell">Dia</th>
+                <th scope="col" class="d-none d-sm-table-cell">Hora</th>
+                <th scope="col" style="width:fit-content" class="d-none d-sm-table-cell">Teléfono</th>
+                <th scope="col" class="d-none d-sm-table-cell">Email</th>
+                <th scope="col" class="d-none d-sm-table-cell">Motivo de la consulta</th>
+                <th scope="col" class="d-none d-sm-table-cell">Plan de viabilidad</th>
+                <th scope="col" class="d-none d-sm-table-cell">Terminado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Emprendedores)
+            {
+                <tr>
+                    <td>@item.Nombre @item.Apellidos</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Fecha.Date.ToString("d")</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Fecha.TimeOfDay</td>
+                    <td scope="col" style="width: 10%" class="d-none d-sm-table-cell">@item.Teléfono</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.Email</td>
+                    <td scope="col" class="d-none d-sm-table-cell">@item.MotivoDeLaConsulto</td>
+                    <td scope="col" class="d-none d-sm-table-cell">
+                        @if (item.PlanViabilidad)
+                        {
+                            <div class="text-center">
+                                <p>&#10004</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <p>&times</p>
+                            </div>
+                        }
+                    </td>
+                    <td scope="col" class="d-none d-sm-table-cell">
+                        @if (item.Terminado)
+                        {
+                            <div class="text-center">
+                                <p>&#10004</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <p>&times</p>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn" style="background-color: dodgerblue" asp-controller="Emprendedores" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
