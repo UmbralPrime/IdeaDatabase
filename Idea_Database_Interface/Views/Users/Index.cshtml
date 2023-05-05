@@ -38,7 +38,14 @@
                     }
                     else
                     {
-                        <p>Admin</p>
+                        @if(!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
+                        {
+                            <a class="btn btn-primary col-md-6" asp-action="UserAddSuperAdmin" asp-route-id="@item.Id">Hacer super admin</a>
+                        }
+                        else
+                        {
+                            <span>Super admin</span>
+                        }
                     }
                 </td>
                 <td>

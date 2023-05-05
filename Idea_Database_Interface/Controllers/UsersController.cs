@@ -9,7 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Idea_Database_Interface.Controllers
 {
-    //[Authorize(Roles ="admin")]
+    [Authorize(Roles ="superadmin")]
     public class UsersController : Controller
     {
         private readonly IdeaDBContext _context;
@@ -63,6 +63,15 @@ namespace Idea_Database_Interface.Controllers
             //if the admin role doesnt exist, creates it
             if (role == null) { await _roleManager.CreateAsync(new IdentityRole("admin")); role = await _roleManager.FindByNameAsync("admin"); }
             IdentityUser user = await _userManager.FindByIdAsync(id);            
+            IdentityResult result = await _userManager.AddToRoleAsync(user, role.Name);
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> UserAddSuperAdmin(string id)
+        {
+            IdentityRole role = await _roleManager.FindByNameAsync("superadmin");
+            //if the role doesnt exist, creates it
+            if(role == null) { await _roleManager.CreateAsync(new IdentityRole("superadmin")); role = await _roleManager.FindByNameAsync("superadmin"); }
+            IdentityUser user = await _userManager.FindByIdAsync(id);
             IdentityResult result = await _userManager.AddToRoleAsync(user, role.Name);
             return RedirectToAction("Index");
         }
