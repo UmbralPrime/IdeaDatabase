@@ -8,7 +8,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Fecha.Date" class="control-label">Dia</label>
+                <label asp-for="Fecha.Date" class="control-label">Día</label>
                 <input type="date" value=@Model.Fecha.Date.ToString("yyyy-MM-dd") asp-for="Fecha" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
@@ -38,7 +38,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="MotivoDeLaConsulto" class="control-label">@Html.DisplayNameFor(model => this.Model.MotivoDeLaConsulto)</label>
+                <label asp-for="MotivoDeLaConsulto" class="control-label">Motivo de la consulta</label>
                 <input asp-for="MotivoDeLaConsulto" class="form-control" />
                 <span asp-validation-for="MotivoDeLaConsulto" class="text-danger"></span>
             </div>
