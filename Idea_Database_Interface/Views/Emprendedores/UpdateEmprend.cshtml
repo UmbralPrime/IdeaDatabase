@@ -14,7 +14,7 @@
             </div>
             <div class="form-group" style="padding: 10px">
                 <label asp-for="FechaHora" class="control-label">Hora</label>
-                <input type="time" value=@Model.Fecha.Hour.ToString() asp-for="FechaHora" class="form-control" />
+                <input type="time" value=@Model.Fecha.TimeOfDay asp-for="FechaHora" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
