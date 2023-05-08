@@ -15,7 +15,7 @@
         <ul class="list-group list-group-flush">
             @foreach (var cat in Model.Categorias)
             {
-                <li class="list-group-item"><a class="input-group" asp-action="Overview" asp-route-id="@cat.Id">@cat.Nombre</a></li>
+                <li class="list-group-item"><a class="nav-link text-black" asp-action="Overview" asp-route-id="@cat.Id">@cat.Nombre</a></li>
             }
         </ul>
     </div>
