@@ -48,14 +48,16 @@
                         }
                     }
                 </td>
-                <td>
-                    @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
-                    {
+
+                @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
+                {
+                    <td>
                         <form asp-action="DeleteUser" method="post">
                             <input type="submit" class="btn btn-danger col-md-6" asp-action="DeleteUser" asp-route-id="@item.Id" value="Borrar" />
                         </form>
-                    }
-                </td>
+                    </td>
+                }
+
             </tr>
         }
     </tbody>
