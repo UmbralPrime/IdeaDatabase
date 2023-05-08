@@ -21,7 +21,7 @@ namespace Idea_Database_Interface.Controllers
         public IActionResult Index()
         {
             Categorias = _uow.CategoriaRepository.GetAll().ToList();
-            IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías).OrderByDescending(x=>x.Fecha);
+            IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías).OrderByDescending(x => x.Fecha);
             EmprendedoresListViewModel vm = new()
             {
                 Emprendedores = emprendes,
@@ -89,7 +89,7 @@ namespace Idea_Database_Interface.Controllers
                     Incidencias = model.Incidencias,
                     Observaciones = model.Observaciones,
                     PlanViabilidad = model.PlanViabilidad,
-                    Terminado= model.Terminado
+                    Terminado = model.Terminado
                 });
                 await _uow.Save();
                 //The following code will add the categories to the freshly created entrepeneur.
@@ -215,10 +215,11 @@ namespace Idea_Database_Interface.Controllers
                     updateCat.Categorías = model.Categorias;
                     _uow.EmprendedoresRepository.Update(updateCat);
                     await _uow.Save();
+
                 }
 
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = model.Id });
             }
             else
             {
@@ -248,6 +249,19 @@ namespace Idea_Database_Interface.Controllers
                 await _uow.Save();
             }
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> DeleteCategor(int catId, int id)
+        {
+            EmprendedoresCategoría toDelete = await _uow.EmprendedoresCategoriaRepository.GetById(catId);
+            _uow.EmprendedoresCategoriaRepository.Delete(toDelete);
+            await _uow.Save();
+            Categorias = _uow.CategoriaRepository.GetAll().ToList();
+            EmprendedoresDetailsViewModel vm = new EmprendedoresDetailsViewModel()
+            {
+                Emprendedores = await _uow.EmprendedoresRepository.GetById(id)
+            };
+            vm.Emprendedores.Categorías = _uow.EmprendedoresCategoriaRepository.GetAll().Where(p => p.IdEmprendedores == id).Include(i => i.Categoría).ToList();
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }

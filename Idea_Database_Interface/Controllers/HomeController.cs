@@ -190,7 +190,7 @@ namespace Idea_Database_Interface.Controllers
                     else
                         throw;
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("DetailsAsync", new {id = id});
             }
             return View(update);
         }

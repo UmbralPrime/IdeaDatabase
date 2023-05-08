@@ -37,10 +37,10 @@
         @if (Model.Emprendedores.Categorías != null)
             @foreach (var cat in Model.Emprendedores.Categorías)
             {
-                <li class="list-group-item">@cat.Categoría.Nombre</li>
+                <li class="list-group-item">@cat.Categoría.Nombre <a class="btn btn-danger float-end" asp-action="DeleteCategor" asp-route-catId="@cat.Id" asp-route-id="@Model.Emprendedores.Id"><i class="bi bi-trash"></i></a></li>
             }
     </ul>
 </div>
-</br>
+<br/>
 <a class="btn" style="background-color: dodgerblue" asp-action="UpdateEmprend" asp-route-id="@Model.Emprendedores.Id">Actualizar datos</a>
 <a asp-action="DeleteEmprend" asp-route-id="@Model.Emprendedores.Id" class="btn btn-danger">Borrar registro</a>

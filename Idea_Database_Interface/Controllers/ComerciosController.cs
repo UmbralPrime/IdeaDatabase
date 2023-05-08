@@ -149,7 +149,7 @@ namespace Idea_Database_Interface.Controllers
                     else
                         throw;
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new {id = id});
             }
             return View(model);
         }
