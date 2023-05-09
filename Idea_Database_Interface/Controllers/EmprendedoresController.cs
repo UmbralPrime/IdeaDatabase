@@ -68,7 +68,7 @@ namespace Idea_Database_Interface.Controllers
                 //This code will fill the select box with all the categories.
                 //It will show the name and the value that is connected is the id,
                 //so it can be used to create the association link with the entrepeneur
-                AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre")
+                AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll().Where(x=>x.IsActive==true), "Id", "Nombre")
             };
             return View(vm);
         }
@@ -124,7 +124,7 @@ namespace Idea_Database_Interface.Controllers
             }
             else
             {
-                model.AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre");
+                model.AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll().Where(x=>x.IsActive==true), "Id", "Nombre");
                 return View(model);
             }
         }
@@ -134,7 +134,8 @@ namespace Idea_Database_Interface.Controllers
             Categorias = _uow.CategoriaRepository.GetAll().ToList();
             EmprendedoresDetailsViewModel vm = new EmprendedoresDetailsViewModel()
             {
-                Emprendedores = await _uow.EmprendedoresRepository.GetById(id)
+                Emprendedores = await _uow.EmprendedoresRepository.GetById(id),
+                CatYears = _uow.CatYearRepository.GetAll().ToList()
             };
             vm.Emprendedores.Categorías = _uow.EmprendedoresCategoriaRepository.GetAll().Where(p => p.IdEmprendedores == id).Include(i => i.Categoría).ToList();
             return View(vm);
@@ -165,7 +166,7 @@ namespace Idea_Database_Interface.Controllers
                 PlanViabilidad = temp.PlanViabilidad,
                 Teléfono = temp.Teléfono,
                 Terminado = temp.Terminado,
-                AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre"),
+                AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll().Where(x => x.IsActive == true), "Id", "Nombre"),
                 SelectedCategorias = selection
             };
             return View(vm);
@@ -223,7 +224,7 @@ namespace Idea_Database_Interface.Controllers
             }
             else
             {
-                model.AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll(), "Id", "Nombre");
+                model.AllCategorias = new MultiSelectList(_uow.CategoriaRepository.GetAll().Where(x => x.IsActive == true), "Id", "Nombre");
                 return View(model);
             }
         }

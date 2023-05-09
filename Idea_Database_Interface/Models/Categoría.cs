@@ -10,6 +10,7 @@ namespace Idea_Database_Interface.Models
         public string Nombre { get; set; }
         [ForeignKey(nameof(CatYear.Id))]
         public int IdYear { get; set; }
+        public bool IsActive { get; set; }
         public IEnumerable<Emprendedores> Emprendedoreses { get; set; }
         public IEnumerable<EmprendedoresCategoría> Emprendedores { get; set; }
         public override string ToString()

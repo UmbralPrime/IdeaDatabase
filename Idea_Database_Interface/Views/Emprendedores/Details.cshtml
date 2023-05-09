@@ -37,7 +37,7 @@
         @if (Model.Emprendedores.Categorías != null)
             @foreach (var cat in Model.Emprendedores.Categorías)
             {
-                <li class="list-group-item">@cat.Categoría.Nombre <a class="btn btn-danger float-end" asp-action="DeleteCategor" asp-route-catId="@cat.Id" asp-route-id="@Model.Emprendedores.Id"><i class="bi bi-trash"></i></a></li>
+                <li class="list-group-item">@cat.Categoría.Nombre: @Model.CatYears.Where(x=>x.Id==cat.Categoría.IdYear).FirstOrDefault().Nombre <a class="btn btn-danger float-end" asp-action="DeleteCategor" asp-route-catId="@cat.Id" asp-route-id="@Model.Emprendedores.Id"><i class="bi bi-trash"></i></a></li>
             }
     </ul>
 </div>
