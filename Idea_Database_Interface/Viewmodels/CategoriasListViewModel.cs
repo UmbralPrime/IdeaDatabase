@@ -4,7 +4,8 @@ namespace Idea_Database_Interface.Viewmodels
 {
     public class CategoriasListViewModel
     {
-        public IEnumerable<Categoría> Categorias { get; set; }
-        public IEnumerable<EmprendedoresCategoría> EmprendedoresCategorias { get; set; }
+        public List<Categoría> Categorias { get; set; }
+        public List<EmprendedoresCategoría> EmprendedoresCategorias { get; set; }
+        public List<CatYear> CatYears { get; set; }
     }
 }

@@ -6,29 +6,35 @@
 <br />
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
-            <a class="btn input-group" style="background-color: dodgerblue" asp-action="CreateCateg">Crear categoría</a>
+        <div class="col-md-6 d-flex">
+            <a class="btn input-group" style="background-color: dodgerblue; margin: 5px;" asp-action="CreateCateg">Crear categoría</a>
+            <a class="btn input-group" style="background-color: dodgerblue; margin: 5px;" asp-action="CreateYear">Crear año</a>
         </div>
     </div>
     <br />
-    <div class="col-md-4">
-        <ul class="list-group list-group-flush">
-            @foreach (var cat in Model.Categorias)
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a class="nav-link text-black" asp-action="Overview" asp-route-id="@cat.Id">@cat.Nombre</a>
-                    @if (@Model.EmprendedoresCategorias.Where(x => x.IdCategoría == cat.Id).Count() < 20)
+    <div class="row">
+        @foreach (var year in Model.CatYears)
+        {
+            <div class="col-md-4">
+                <h4>@year.Nombre</h4>
+                <ul class="list-group list-group-flush">
+                    @foreach (var cat in Model.Categorias.Where(x => x.IdYear == year.Id))
                     {
-                        <span class="badge bg-primary ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a class="nav-link text-black" asp-action="Overview" asp-route-id="@cat.Id">@cat.Nombre</a>
+                            @if (@Model.EmprendedoresCategorias.Where(x => x.IdCategoría == cat.Id).Count() < 20)
+                            {
+                                <span class="badge bg-primary ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
+                            }
+                        </li>
                     }
-                    else
-                    {
-                        <span class="badge bg-success ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
-                    }
-                </li>
-            }
-        </ul>
+                </ul>
+            </div>
+        }
     </div>
-
 
 </div>

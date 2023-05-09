@@ -1,0 +1,20 @@
+﻿@model Idea_Database_Interface.Viewmodels.CatYearCreateViewModel
+@{
+    ViewData["Title"] = "Crear año";
+}
+<h3 class="display-4">Crear año</h3>
+<br />
+<form asp-action="CreateYear" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" />
+    <div class="col-md-8">
+        <div class="form-group" style="padding: 10px">
+            <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre)</label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="form-group" style="padding: 10px">
+            <input type="submit" value="Crear" class="btn" style="background-color: aqua !important; color: white !important;" />
+            <a asp-controller="Categorias" asp-action="Index" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
+        </div>
+    </div>
+</form>

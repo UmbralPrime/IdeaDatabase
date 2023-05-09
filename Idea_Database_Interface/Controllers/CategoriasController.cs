@@ -3,6 +3,7 @@ using Idea_Database_Interface.Models;
 using Idea_Database_Interface.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -20,13 +21,17 @@ namespace Idea_Database_Interface.Controllers
             CategoriasListViewModel vm = new()
             {
                 Categorias = _uow.CategoriaRepository.GetAll().ToList(),
-                EmprendedoresCategorias = _uow.EmprendedoresCategoriaRepository.GetAll()
+                EmprendedoresCategorias = _uow.EmprendedoresCategoriaRepository.GetAll().ToList(),
+                CatYears = _uow.CatYearRepository.GetAll().ToList()
             };
             return View(vm);
         }
         public IActionResult CreateCateg()
         {
-            CategoriaCrudViewModel vm = new CategoriaCrudViewModel();
+            CategoriaCrudViewModel vm = new CategoriaCrudViewModel() 
+            {
+                Years = new SelectList(_uow.CatYearRepository.GetAll(),"Id","Nombre")
+            };
             return View(vm);
         }
         [HttpPost]
@@ -37,13 +42,15 @@ namespace Idea_Database_Interface.Controllers
             {
                 _uow.CategoriaRepository.Create(new Categoría()
                 {
-                    Nombre = model.Nombre
+                    Nombre = model.Nombre,
+                    IdYear=model.Year
                 });
                 await _uow.Save();
                 return RedirectToAction("Index");
             }
             else
             {
+                model.Years = new SelectList(_uow.CatYearRepository.GetAll(), "Id", "Nombre");
                 return View(model);
             }
         }
@@ -65,6 +72,29 @@ namespace Idea_Database_Interface.Controllers
                 Emprendedores = filtered
             };
             return View(vm);
+        }
+        public IActionResult CreateYear()
+        {
+            CatYearCreateViewModel vm = new CatYearCreateViewModel();
+            return View(vm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateYear(CatYearCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _uow.CatYearRepository.Create(new CatYear()
+                {
+                    Nombre = model.Nombre
+                });
+                await _uow.Save();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(model);
+            }
         }
     }
 }
