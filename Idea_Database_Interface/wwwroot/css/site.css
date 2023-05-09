@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+    border-color: white;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs {
+    border-bottom: 0px solid #00000000;
+}

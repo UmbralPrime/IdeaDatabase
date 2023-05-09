@@ -6,20 +6,20 @@
 <br />
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6 d-flex">
-            <a class="btn input-group" style="background-color: dodgerblue; margin: 5px;" asp-action="Index">Volver</a>
+        <div class="col-md-4 d-flex">
+            <a class="btn btn-primary input-group" style="margin: 5px;" asp-action="Index">Volver</a>
         </div>
     </div>
     <br />
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <ul class="list-group list-group-flush">
                 @foreach (var cat in Model.Categorias)
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         @cat.Nombre 
                         <div>
-                            <a class="btn" asp-action="ActivateCat" asp-route-id="@cat.Id">
+                            <a class="btn btn-outline-primary" asp-action="ActivateCat" asp-route-id="@cat.Id">
                                 @if (cat.IsActive)
                                 {
                                     <i class="bi bi-check2-square"></i>
@@ -29,7 +29,7 @@
                                     <i class="bi bi-app"></i>
                                 }
                             </a>
-                            <a class="btn" asp-action="UpdateCateg" asp-route-id="@cat.Id"><i class="bi bi-pencil-square"></i></a>
+                            <a class="btn btn-outline-warning" asp-action="UpdateCateg" asp-route-id="@cat.Id"><i class="bi bi-pencil-square"></i></a>
                         </div>
                     </li>
                 }
