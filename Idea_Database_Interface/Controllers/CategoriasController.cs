@@ -19,7 +19,8 @@ namespace Idea_Database_Interface.Controllers
         {
             CategoriasListViewModel vm = new()
             {
-                Categorias = _uow.CategoriaRepository.GetAll().ToList()
+                Categorias = _uow.CategoriaRepository.GetAll().ToList(),
+                EmprendedoresCategorias = _uow.EmprendedoresCategoriaRepository.GetAll()
             };
             return View(vm);
         }
