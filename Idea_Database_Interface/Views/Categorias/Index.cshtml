@@ -17,7 +17,14 @@
             {
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a class="nav-link text-black" asp-action="Overview" asp-route-id="@cat.Id">@cat.Nombre</a>
-                    <span class="badge bg-primary ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
+                    @if (@Model.EmprendedoresCategorias.Where(x => x.IdCategoría == cat.Id).Count() < 20)
+                    {
+                        <span class="badge bg-primary ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success ">@Model.EmprendedoresCategorias.Where(x=>x.IdCategoría==cat.Id).Count()</span>
+                    }
                 </li>
             }
         </ul>
