@@ -14,10 +14,17 @@
     <div class="row">
         <div class="col-md-6">
             <ul class="list-group list-group-flush">
+                <li class="list-group-item list-group-item-dark d-flex justify-content-between align-items-center">
+                    <span>Nombre</span>
+                    <div>
+                        <span>Activar |</span>
+                        <span>Actualizar</span>
+                    </div>
+                </li>
                 @foreach (var cat in Model.Categorias)
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @cat.Nombre 
+                        @cat.Nombre
                         <div>
                             <a class="btn btn-outline-primary" asp-action="ActivateCat" asp-route-id="@cat.Id">
                                 @if (cat.IsActive)

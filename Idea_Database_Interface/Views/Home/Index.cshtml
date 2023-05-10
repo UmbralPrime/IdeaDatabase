@@ -6,25 +6,18 @@
 <div>
     <h1 class="display-4">Empresas</h1>
     <br />
-    <form asp-action="Filter" method="post">
+    @using (Html.BeginForm())
+    {
         <div class="container">
             <div class="form-group row">
-                <div class="col-md-3">
-                    <select asp-for="FilterVal" class="form-select flex-column" id="selectFilter">
-                        <option selected value="1">Nombre</option>
-                        <option value="2">CIF</option>
-                        <option value="3">Teléfono</option>
-                        <option value="4">Email</option>
-                    </select>
+                <div class="col-md-4">
+                    @Html.DropDownList("FilterSelect",Model.FilterOptions, null,new {@class="form-select flex-column", @id="selectFilter"})
                 </div>
-                <div class="col-md-3">
-                    <input type="text" value="" class="form-control" id="textFilter" asp-for="FilterText" />
+                <div class="col-md-4">
+                    @Html.TextBox("SearchString",null,new {@class="form-control"})
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <input type="submit" value="Filtro" class="btn input-group" style="background-color: darkorange" />
-                </div>
-                <div class="col-md-3">
-                    <a asp-action="Index" class="btn input-group" style="background-color: orangered">Restablecer</a>
                 </div>
             </div>
             <br />
@@ -33,8 +26,7 @@
                 <p class="text-end">Total: @Model.Empresas.Count() Empresas</p>
             </div>
         </div>
-
-    </form>
+    }
     <div class="text-start">
         <table class="table">
             <thead>

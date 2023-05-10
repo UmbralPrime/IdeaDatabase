@@ -5,6 +5,7 @@ using Idea_Database_Interface.Models;
 using Idea_Database_Interface.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Immutable;
@@ -25,51 +26,44 @@ namespace Idea_Database_Interface.Controllers
             _uow = uow;
         }
         //This is to fill in the index page
-        public IActionResult Index()
+        public IActionResult Index(string searchString, string filterSelect)
         {
+            List<string> options = new();
+            options.Add("Nombre");
+            options.Add("Teléfono");
+            options.Add("Email");
+            options.Add("CIF");
+            SelectList filterOptions = new SelectList(options);
+            IEnumerable<Empresa> empresas = _uow.EmpresaRepository.GetAll().ToList().OrderBy(x => x.Nombre);
             CompaniesListViewModel model = new CompaniesListViewModel()
             {
-                Empresas = _uow.EmpresaRepository.GetAll().ToList().OrderBy(x => x.Nombre),
-                FilterText = "",
-                FilterVal = 1
+                Empresas = empresas,
+                FilterOptions = filterOptions
             };
-
-            return View(model);
-        }
-        [HttpPost]
-        //The filter reverts back to the index page if the reset button is clicked. Otherwise it looks for 
-        //the searched item
-        public async Task<IActionResult> Filter(CompaniesListViewModel model)
-        {
-            CompaniesListViewModel vm = new CompaniesListViewModel()
+            //filters based on the input of the searchstring and the selected filter
+            //if the search string is empty it will just show all the companies
+            if (!String.IsNullOrEmpty(searchString))
             {
-                Empresas = _uow.EmpresaRepository.GetAll().ToList(),
-                FilterText = string.Empty,
-                FilterVal = 1
-            };
-            if (model.FilterText != null)
-            {
-
-                model.FilterText = model.FilterText.ToLower();
-                switch (model.FilterVal)
+                searchString = searchString.ToLower();
+                switch (filterSelect)
                 {
-                    case 1:
-                        vm.Empresas = _uow.EmpresaRepository.GetAll().ToList().Where(x => x.Nombre.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 2:
-                        vm.Empresas = _uow.EmpresaRepository.GetAll().ToList().Where(x => x.CIF.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 3:
-                        vm.Empresas = _uow.EmpresaRepository.GetAll().ToList().Where(x => x.Teléfono.Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 4:
-                        vm.Empresas = _uow.EmpresaRepository.GetAll().ToList().Where(x => x.Email.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
+                    case "Nombre":
+                        model.Empresas = empresas.Where(x => x.Nombre.ToLower().Contains(searchString)).ToList();
+                        break;
+                    case "Teléfono":
+                        model.Empresas = empresas.Where(x => x.Teléfono.Contains(searchString)).ToList();
+                        break;
+                    case "Email":
+                        model.Empresas = empresas.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
+                        break;
+                    case "CIF":
+                        model.Empresas = empresas.Where(x => x.CIF.ToLower().Contains(searchString)).ToList();
+                        break;
                     default:
-                        return View("Index", vm);
+                        break;
                 }
             }
-            return View("Index", vm);
+            return View(model);
         }
         //This goes to the details page of a clicked company
         public async Task<IActionResult> DetailsAsync(int id)
@@ -190,7 +184,7 @@ namespace Idea_Database_Interface.Controllers
                     else
                         throw;
                 }
-                return RedirectToAction("DetailsAsync", new {id = id});
+                return RedirectToAction("DetailsAsync", new { id = id });
             }
             return View(update);
         }

@@ -3,6 +3,8 @@ using Idea_Database_Interface.Models;
 using Idea_Database_Interface.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -13,44 +15,41 @@ namespace Idea_Database_Interface.Controllers
     {
         private readonly IUnitOfWork _uow;
         public ComerciosController(IUnitOfWork uow) { _uow = uow; }
-        public IActionResult Index()
+        public IActionResult Index(string searchString, string filterSelect)
         {
-            ComerciosListViewModel vm = new ComerciosListViewModel()
-            {
-                Comercios = _uow.ComerciosRepository.GetAll()
-            };
-            return View(vm);
-        }
-        public IActionResult Filter(CompaniesListViewModel model)
-        {
-            //This is the same filter that is used in the companies page
+            List<string> options = new();
+            options.Add("Nombre");
+            options.Add("CIF");
+            options.Add("Email");
+            SelectList filterOptions = new SelectList(options);
             ComerciosListViewModel vm = new ComerciosListViewModel()
             {
                 Comercios = _uow.ComerciosRepository.GetAll(),
-                FilterText = string.Empty,
-                FilterVal = 1
+                FilterOptions = filterOptions
             };
-            if (model.FilterText != null)
+            //filters based on the input of the searchstring and the selected filter
+            //if the search string is empty it will just show all the companies
+            if (!string.IsNullOrEmpty(searchString))
             {
-
-                model.FilterText = model.FilterText.ToLower();
-                switch (model.FilterVal)
+                searchString = searchString.ToLower();
+                switch (filterSelect)
                 {
-                    case 1:
-                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.NombreComercial.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 2:
-                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.CIF.Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 3:
-                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.Email.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
+                    case "Nombre":
+                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.NombreComercial.ToLower().Contains(searchString));
+                        break;
+                    case "CIF":
+                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.CIF.Contains(searchString));
+                        break;
+                    case "Email":
+                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.Email.ToLower().Contains(searchString));
+                        break;
                     default:
-                        return View("Index", vm);
-                }
+                        break;
+                };
             }
-            return View("Index", vm);
+            return View(vm);
         }
+
         public IActionResult CreateComer()
         {
             ComerciosCrudViewModel vm = new ComerciosCrudViewModel();
@@ -149,18 +148,18 @@ namespace Idea_Database_Interface.Controllers
                     else
                         throw;
                 }
-                return RedirectToAction("Details", new {id = id});
+                return RedirectToAction("Details", new { id = id });
             }
             return View(model);
         }
         public async Task<IActionResult> DeleteComer(int id)
         {
-            ComercioDetailViewModel model = new ComercioDetailViewModel() {Comercio = await _uow.ComerciosRepository.GetById(id) };
+            ComercioDetailViewModel model = new ComercioDetailViewModel() { Comercio = await _uow.ComerciosRepository.GetById(id) };
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComer(int id,  ComercioDetailViewModel model)
+        public async Task<IActionResult> DeleteComer(int id, ComercioDetailViewModel model)
         {
             Comercios comer = await _uow.ComerciosRepository.GetById(id);
             if (comer != null)

@@ -1,4 +1,5 @@
 ﻿using Idea_Database_Interface.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Idea_Database_Interface.Viewmodels
 {
@@ -6,7 +7,6 @@ namespace Idea_Database_Interface.Viewmodels
     {
         public Categoría Categoría { get; set; }
         public IEnumerable<Emprendedores> Emprendedores { get; set; }
-        public int FilterVal { get; set; }
-        public string FilterText { get; set; }
+        public SelectList FilterOptions { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using System.Data;
 
 namespace Idea_Database_Interface.Controllers
@@ -55,25 +56,51 @@ namespace Idea_Database_Interface.Controllers
                 return View(model);
             }
         }
-        public async Task<IActionResult> Overview(int id)
+        public async Task<IActionResult> Overview(int id, string searchString, string filterSelect)
         {
             IEnumerable<Emprendedores> allEmps = _uow.EmprendedoresRepository.GetAll();
             List<EmprendedoresCategoría> emps = _uow.EmprendedoresCategoriaRepository.GetAll().Where(i => i.IdCategoría == id).ToList();
             List<Emprendedores> filtered = new List<Emprendedores>();
+            //add all the emprendedores based on the category id
             foreach (var emp in emps)
             {
                 Emprendedores temp = await _uow.EmprendedoresRepository.GetById(emp.IdEmprendedores);
                 filtered.Add(temp);
             }
+            //filters based on the input of the searchstring and the selected filter
+            //if the search string is empty it will just show all 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                switch (filterSelect)
+                {
+                    case "Nombre":
+                        filtered = filtered.Where(x => x.Nombre.ToLower().Contains(searchString) || x.Apellidos.ToLower().Contains(searchString)).ToList();
+                        break;
+                    case "Teléfono":
+                        filtered = filtered.Where(x => x.Teléfono.Contains(searchString)).ToList();
+                        break;
+                    case "Email":
+                        filtered = filtered.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            List<string> options = new();
+            options.Add("Nombre");
+            options.Add("Teléfono");
+            options.Add("Email");
+            SelectList filterOptions = new SelectList(options);
             CategoriaEmprendListViewModel vm = new CategoriaEmprendListViewModel()
             {
                 Categoría = await _uow.CategoriaRepository.GetById(id),
-                FilterText = string.Empty,
-                FilterVal = 1,
-                Emprendedores = filtered
+                Emprendedores = filtered,
+                FilterOptions = filterOptions
             };
             return View(vm);
         }
+
         public IActionResult CreateYear()
         {
             CatYearCreateViewModel vm = new CatYearCreateViewModel();

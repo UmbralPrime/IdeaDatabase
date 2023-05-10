@@ -18,48 +18,42 @@ namespace Idea_Database_Interface.Controllers
         public EmprendedoresController(IUnitOfWork uow) { _uow = uow; }
         public List<Categoría> Categorias;
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, string filterSelect)
         {
             Categorias = _uow.CategoriaRepository.GetAll().ToList();
             IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías).OrderByDescending(x => x.Fecha);
+            List<string> options = new();
+            options.Add("Nombre");
+            options.Add("Teléfono");
+            options.Add("Email");
+            SelectList filterOptions = new SelectList(options);
             EmprendedoresListViewModel vm = new()
             {
                 Emprendedores = emprendes,
-                FilterText = "",
-                FilterVal = 1
+                FilterOptions = filterOptions
             };
-            return View(vm);
-
-        }
-        public IActionResult Filter(CompaniesListViewModel model)
-        {
-            //This is the same filter that is used in the companies page
-            EmprendedoresListViewModel vm = new EmprendedoresListViewModel()
+            //filters based on the input of the searchstring and the selected filter
+            //if the search string is empty it will just show all the companies
+            if (!String.IsNullOrEmpty(searchString))
             {
-                Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList(),
-                FilterText = string.Empty,
-                FilterVal = 1
-            };
-            if (model.FilterText != null)
-            {
-
-                model.FilterText = model.FilterText.ToLower();
-                switch (model.FilterVal)
+                searchString = searchString.ToLower();
+                switch (filterSelect)
                 {
-                    case 1:
-                        vm.Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList().Where(x => x.Nombre.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 2:
-                        vm.Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList().Where(x => x.Teléfono.Contains(model.FilterText));
-                        return View("Index", vm);
-                    case 3:
-                        vm.Emprendedores = _uow.EmprendedoresRepository.GetAll().ToList().Where(x => x.Email.ToLower().Contains(model.FilterText));
-                        return View("Index", vm);
+                    case "Nombre":
+                        vm.Emprendedores= emprendes.Where(x => x.Nombre.ToLower().Contains(searchString) || x.Apellidos.ToLower().Contains(searchString)).ToList();
+                        break;
+                    case "Teléfono":
+                        vm.Emprendedores = emprendes.Where(x => x.Teléfono.Contains(searchString)).ToList();
+                        break;
+                    case "Email":
+                        vm.Emprendedores = emprendes.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
+                        break;
                     default:
-                        return View("Index", vm);
+                        break;
                 }
             }
-            return View("Index", vm);
+            return View(vm);
+
         }
         public IActionResult CreateEmprend()
         {
