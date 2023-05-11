@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.Data;
+using PagedList;
 
 namespace Idea_Database_Interface.Controllers
 {
@@ -18,7 +19,7 @@ namespace Idea_Database_Interface.Controllers
         public EmprendedoresController(IUnitOfWork uow) { _uow = uow; }
         public List<Categoría> Categorias;
 
-        public IActionResult Index(string searchString, string filterSelect)
+        public IActionResult Index(string searchString, string filterSelect, int? page)
         {
             Categorias = _uow.CategoriaRepository.GetAll().ToList();
             IEnumerable<Emprendedores> emprendes = _uow.EmprendedoresRepository.GetAll().Include(p => p.Categorías).OrderByDescending(x => x.Fecha);
@@ -27,11 +28,6 @@ namespace Idea_Database_Interface.Controllers
             options.Add("Teléfono");
             options.Add("Email");
             SelectList filterOptions = new SelectList(options);
-            EmprendedoresListViewModel vm = new()
-            {
-                Emprendedores = emprendes,
-                FilterOptions = filterOptions
-            };
             //filters based on the input of the searchstring and the selected filter
             //if the search string is empty it will just show all the companies
             if (!String.IsNullOrEmpty(searchString))
@@ -40,18 +36,39 @@ namespace Idea_Database_Interface.Controllers
                 switch (filterSelect)
                 {
                     case "Nombre":
-                        vm.Emprendedores= emprendes.Where(x => x.Nombre.ToLower().Contains(searchString) || x.Apellidos.ToLower().Contains(searchString)).ToList();
+                        emprendes= emprendes.Where(x => x.Nombre.ToLower().Contains(searchString) || x.Apellidos.ToLower().Contains(searchString)).ToList();
                         break;
                     case "Teléfono":
-                        vm.Emprendedores = emprendes.Where(x => x.Teléfono.Contains(searchString)).ToList();
+                        emprendes = emprendes.Where(x => x.Teléfono.Contains(searchString)).ToList();
                         break;
                     case "Email":
-                        vm.Emprendedores = emprendes.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
+                        emprendes = emprendes.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
                         break;
                     default:
                         break;
                 }
             }
+            //This is to prevent the searchbox from being erased
+            ViewBag.SearchString = searchString;
+            int pageNumber = page ?? 1;
+            int pageSize = 10;
+            //this is to check if the pagenumber isnt higher than the pagecount
+            IPagedList testList = emprendes.ToPagedList(1, pageSize);
+            if (testList.PageCount < pageNumber)
+                pageNumber = testList.PageCount;
+            pageNumber = pageNumber < 1 ? 1 : pageNumber;
+            EmprendedoresListViewModel vm = new()
+            {
+                Emprendedores = emprendes.ToPagedList(pageNumber,pageSize),
+                FilterOptions = filterOptions,
+                PageCount = pageNumber,
+                SearchedFilter = filterSelect,
+                SearchedString = searchString
+            };
+            //This resets the pagenumber for the next and previous page buttons
+            //Without this you can only change the page once
+            //And now it just works, i dont know how
+            ModelState.Clear();
             return View(vm);
 
         }

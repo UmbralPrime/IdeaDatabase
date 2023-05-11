@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
+using PagedList;
 using System.Data;
 
 namespace Idea_Database_Interface.Controllers
@@ -56,7 +57,7 @@ namespace Idea_Database_Interface.Controllers
                 return View(model);
             }
         }
-        public async Task<IActionResult> Overview(int id, string searchString, string filterSelect)
+        public async Task<IActionResult> Overview(int id, string searchString, string filterSelect,int? page)
         {
             IEnumerable<Emprendedores> allEmps = _uow.EmprendedoresRepository.GetAll();
             List<EmprendedoresCategoría> emps = _uow.EmprendedoresCategoriaRepository.GetAll().Where(i => i.IdCategoría == id).ToList();
@@ -92,12 +93,28 @@ namespace Idea_Database_Interface.Controllers
             options.Add("Teléfono");
             options.Add("Email");
             SelectList filterOptions = new SelectList(options);
+            //This is to prevent the searchbox from being erased
+            ViewBag.SearchString = searchString;
+            int pageNumber = page ?? 1;
+            int pageSize = 10;
+            //this is to check if the pagenumber isnt higher than the pagecount
+            IPagedList testList = filtered.ToPagedList(1, pageSize);
+            if (testList.PageCount < pageNumber)
+                pageNumber = testList.PageCount;
+            pageNumber = pageNumber < 1 ? 1 : pageNumber;
             CategoriaEmprendListViewModel vm = new CategoriaEmprendListViewModel()
             {
                 Categoría = await _uow.CategoriaRepository.GetById(id),
-                Emprendedores = filtered,
-                FilterOptions = filterOptions
+                Emprendedores = filtered.ToPagedList(pageNumber,pageSize),
+                FilterOptions = filterOptions,
+                PageCount = pageNumber,
+                SearchedFilter = filterSelect,
+                SearchedString = searchString
             };
+            //This resets the pagenumber for the next and previous page buttons
+            //Without this you can only change the page once
+            //And now it just works, i dont know how
+            ModelState.Clear();
             return View(vm);
         }
 

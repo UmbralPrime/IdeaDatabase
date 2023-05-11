@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PagedList;
 using System.Collections.Immutable;
 using System.Data;
 using System.Diagnostics;
@@ -26,8 +27,9 @@ namespace Idea_Database_Interface.Controllers
             _uow = uow;
         }
         //This is to fill in the index page
-        public IActionResult Index(string searchString, string filterSelect)
+        public IActionResult Index(string searchString, string filterSelect, int? page)
         {
+
             List<string> options = new();
             options.Add("Nombre");
             options.Add("Teléfono");
@@ -35,11 +37,7 @@ namespace Idea_Database_Interface.Controllers
             options.Add("CIF");
             SelectList filterOptions = new SelectList(options);
             IEnumerable<Empresa> empresas = _uow.EmpresaRepository.GetAll().ToList().OrderBy(x => x.Nombre);
-            CompaniesListViewModel model = new CompaniesListViewModel()
-            {
-                Empresas = empresas,
-                FilterOptions = filterOptions
-            };
+
             //filters based on the input of the searchstring and the selected filter
             //if the search string is empty it will just show all the companies
             if (!String.IsNullOrEmpty(searchString))
@@ -48,21 +46,43 @@ namespace Idea_Database_Interface.Controllers
                 switch (filterSelect)
                 {
                     case "Nombre":
-                        model.Empresas = empresas.Where(x => x.Nombre.ToLower().Contains(searchString)).ToList();
+                        empresas = empresas.Where(x => x.Nombre.ToLower().Contains(searchString)).ToList();
                         break;
                     case "Teléfono":
-                        model.Empresas = empresas.Where(x => x.Teléfono.Contains(searchString)).ToList();
+                        empresas = empresas.Where(x => x.Teléfono.Contains(searchString)).ToList();
                         break;
                     case "Email":
-                        model.Empresas = empresas.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
+                        empresas = empresas.Where(x => x.Email.ToLower().Contains(searchString)).ToList();
                         break;
                     case "CIF":
-                        model.Empresas = empresas.Where(x => x.CIF.ToLower().Contains(searchString)).ToList();
+                        empresas = empresas.Where(x => x.CIF.ToLower().Contains(searchString)).ToList();
                         break;
                     default:
                         break;
                 }
             }
+            //This is to prevent the searchbox from being erased
+            ViewBag.SearchString = searchString;
+            //Here you can change the amount of items on a page
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            //this is to check if the pagenumber isnt higher than the pagecount
+            IPagedList testList = empresas.ToPagedList(1, pageSize);
+            if (testList.PageCount < pageNumber)
+                pageNumber = testList.PageCount;
+            pageNumber = pageNumber < 1 ? 1 : pageNumber;
+            CompaniesListViewModel model = new CompaniesListViewModel()
+            {
+                Empresas = empresas.ToPagedList(pageNumber, pageSize),
+                FilterOptions = filterOptions,
+                PageCount = pageNumber,
+                SearchedFilter = filterSelect,
+                SearchedString = searchString
+            };
+            //This resets the pagenumber for the next and previous page buttons
+            //Without this you can only change the page once
+            //And now it just works, i dont know how
+            ModelState.Clear();
             return View(model);
         }
         //This goes to the details page of a clicked company

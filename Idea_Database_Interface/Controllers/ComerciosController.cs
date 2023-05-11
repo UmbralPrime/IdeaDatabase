@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using PagedList;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 
 namespace Idea_Database_Interface.Controllers
 {
@@ -15,18 +17,15 @@ namespace Idea_Database_Interface.Controllers
     {
         private readonly IUnitOfWork _uow;
         public ComerciosController(IUnitOfWork uow) { _uow = uow; }
-        public IActionResult Index(string searchString, string filterSelect)
+        public IActionResult Index(string searchString, string filterSelect, int? page)
         {
             List<string> options = new();
             options.Add("Nombre");
             options.Add("CIF");
             options.Add("Email");
-            SelectList filterOptions = new SelectList(options);
-            ComerciosListViewModel vm = new ComerciosListViewModel()
-            {
-                Comercios = _uow.ComerciosRepository.GetAll(),
-                FilterOptions = filterOptions
-            };
+            SelectList filterOptions = new SelectList(options, filterSelect);
+            IEnumerable<Comercios> comercios = _uow.ComerciosRepository.GetAll();
+
             //filters based on the input of the searchstring and the selected filter
             //if the search string is empty it will just show all the companies
             if (!string.IsNullOrEmpty(searchString))
@@ -35,18 +34,39 @@ namespace Idea_Database_Interface.Controllers
                 switch (filterSelect)
                 {
                     case "Nombre":
-                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.NombreComercial.ToLower().Contains(searchString));
+                        comercios = comercios.Where(x => x.NombreComercial.ToLower().Contains(searchString));
                         break;
                     case "CIF":
-                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.CIF.Contains(searchString));
+                        comercios = comercios.Where(x => x.CIF.Contains(searchString));
                         break;
                     case "Email":
-                        vm.Comercios = _uow.ComerciosRepository.GetAll().Where(x => x.Email.ToLower().Contains(searchString));
+                        comercios = comercios.Where(x => x.Email.ToLower().Contains(searchString));
                         break;
                     default:
                         break;
                 };
             }
+            //This is to prevent the searchbox from being erased
+            ViewBag.SearchString = searchString;
+            int pageNumber = page ?? 1;
+            int pageSize = 10;
+            //this is to check if the pagenumber isnt higher than the pagecount
+            IPagedList testList = comercios.ToPagedList(1, pageSize);
+            if (testList.PageCount < pageNumber)
+                pageNumber = testList.PageCount;
+            pageNumber = pageNumber < 1 ? 1 : pageNumber;
+            ComerciosListViewModel vm = new ComerciosListViewModel()
+            {
+                Comercios = comercios.ToPagedList(pageNumber, pageSize),
+                FilterOptions = filterOptions,
+                PageCount = pageNumber,
+                SearchedFilter = filterSelect,
+                SearchedString = searchString
+            };
+            //This resets the pagenumber for the next and previous page buttons
+            //Without this you can only change the page once
+            //And now it just works, i dont know how
+            ModelState.Clear();
             return View(vm);
         }
 
@@ -75,7 +95,8 @@ namespace Idea_Database_Interface.Controllers
                     Municipio = model.Municipio,
                     Localidad = model.Localidad,
                     TeléfonoFijo = model.TeléfonoFijo,
-                    Email = model.Email
+                    Email = model.Email,
+                    Contacto = model.Contacto
                 });
                 await _uow.Save();
                 return RedirectToAction(nameof(Index));
@@ -108,7 +129,8 @@ namespace Idea_Database_Interface.Controllers
                 Municipio = temp.Municipio,
                 Móvi = temp.Móvi,
                 Número = temp.Número,
-                TeléfonoFijo = temp.TeléfonoFijo
+                TeléfonoFijo = temp.TeléfonoFijo,
+                Contacto = temp.Contacto
             };
             return View(model);
         }
@@ -136,7 +158,8 @@ namespace Idea_Database_Interface.Controllers
                         Municipio = model.Municipio,
                         Móvi = model.Móvi,
                         Número = model.Número,
-                        TeléfonoFijo = model.TeléfonoFijo
+                        TeléfonoFijo = model.TeléfonoFijo,
+                        Contacto = model.Contacto
                     };
                     _uow.ComerciosRepository.Update(comercio);
                     await _uow.Save();

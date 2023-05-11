@@ -16,5 +16,6 @@
         public string Móvi { get; set; }
         public string Email { get; set; }
         public string CIF { get; set; }
+        public string? Contacto { get; set; }
     }
 }

@@ -14,7 +14,9 @@
                     @Html.DropDownList("FilterSelect",Model.FilterOptions, null,new {@class="form-select flex-column", @id="selectFilter"})
                 </div>
                 <div class="col-md-4">
-                    @Html.TextBox("SearchString",null,new {@class="form-control"})
+                    @Html.TextBox("SearchString",ViewBag.SearchString as string,new {@class="form-control"})
+                    @*This is to reset the page to page 1 if you searched something new*@
+                    @Html.Hidden("Page",null)
                 </div>
                 <div class="col-md-4">
                     <input type="submit" value="Filtro" class="btn input-group" style="background-color: darkorange" />
@@ -23,7 +25,7 @@
             <br />
             <div class="row justify-content-md-center">
                 <a asp-action="CreateEmpr" class="btn col-md-3" style="background-color: darkorange">Crear una nueva empresa</a>
-                <p class="text-end">Total: @Model.Empresas.Count() Empresas</p>
+                <p class="text-end">Total: @Model.Empresas.TotalItemCount Empresas</p>
             </div>
         </div>
     }
@@ -61,5 +63,28 @@
             </tbody>
         </table>
     </div>
-
+    <div class="col-md-3 d-flex">
+        <div>
+            @using (Html.BeginForm(FormMethod.Get))
+            {
+                @Html.Hidden("Page",(Model.PageCount)-1)
+                @Html.Hidden("SearchString",Model.SearchedString)
+                @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                <input type="submit" value="<<" class="btn input-group btn-primary btn-sm" />
+            }
+        </div>
+        <span style="margin: 5px">
+            Page @(Model.Empresas.PageCount
+            < Model.Empresas.PageNumber ? 0 : Model.Empresas.PageNumber) of @Model.Empresas.PageCount
+        </span>
+        <div>
+            @using (Html.BeginForm(FormMethod.Get))
+            {
+                @Html.Hidden("Page", (Model.PageCount)+1)
+                @Html.Hidden("SearchString",Model.SearchedString)
+                @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                <input type="submit" value=">>" class="btn input-group btn-primary btn-sm" />
+            }
+        </div>
+    </div>
 </div>
