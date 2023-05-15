@@ -4,7 +4,9 @@ using Idea_Database_Interface.Data.Repository;
 using Idea_Database_Interface.Data.Repository.Interfaces;
 using Idea_Database_Interface.Data.UnitOfWork;
 using Idea_Database_Interface.Models;
+using Idea_Database_Interface.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Text;
 
@@ -18,6 +20,11 @@ builder.Services.AddScoped<IGenericRepository<Empresa>, GenericRepository<Empres
 builder.Services.AddScoped<IGenericRepository<Correspondencia>, GenericRepository<Correspondencia>>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("SendGrid"));
+
+
 var app = builder.Build();
 
 
