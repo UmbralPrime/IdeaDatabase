@@ -14,9 +14,19 @@ namespace Idea_Database_Interface.Data.UnitOfWork
         private IGenericRepository<EmprendedoresCategoría> emprCatRepo;
         private IGenericRepository<Comercios> comerciosRepo;
         private IGenericRepository<CatYear> catYearRepo;
+        private IBonosRepository bonosRepo;
         public UnitOfWork(IdeaDBContext dBContext)
         {
             _context = dBContext;
+        }
+        public IBonosRepository BonosRepository
+        {
+            get
+            {
+                if (bonosRepo == null)
+                    this.bonosRepo = new BonosRepository(_context);
+                return bonosRepo;
+            }
         }
         public IGenericRepository<Empresa> EmpresaRepository
         {

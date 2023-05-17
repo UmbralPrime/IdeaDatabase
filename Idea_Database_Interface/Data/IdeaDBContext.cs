@@ -15,6 +15,7 @@ namespace Idea_Database_Interface.Data
         public DbSet<EmprendedoresCategoría> EmprendedoresCategorías { get; set; }
         public DbSet<Comercios> Comercios { get; set; }
         public DbSet<CatYear> CatYear { get; set; }
+        public DbSet<Bonos> Bonos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -25,6 +26,7 @@ namespace Idea_Database_Interface.Data
             modelBuilder.Entity<Categoría>().ToTable("Categorías");
             modelBuilder.Entity<Comercios>().ToTable("Comercios");
             modelBuilder.Entity<CatYear>().ToTable("CatYear");
+            modelBuilder.Entity<Bonos>().ToTable("Bonos");
             modelBuilder.Entity<EmprendedoresCategoría>().ToTable("EmprendedoresCategorías");
             modelBuilder.Entity<EmprendedoresCategoría>()
                 .HasOne(x => x.Emprendedores)

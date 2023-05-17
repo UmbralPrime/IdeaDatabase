@@ -1,0 +1,81 @@
+﻿@model Idea_Database_Interface.Viewmodels.BonosListViewModel
+@{
+    ViewData["Title"] = "Bonos página";
+}
+
+<div>
+    <h1 class="display-4">Bonos</h1>
+    <br />
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <div class="form-group row">
+                <div class="col-md-4">
+                    @Html.DropDownList("FilterSelect",Model.FilterOptions, null,new {@class="form-select flex-column", @id="selectFilter"})
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBox("SearchString",ViewBag.SearchString as string,new {@class="form-control"})
+                    @*This is to reset the page to page 1 if you searched something new*@
+                    @Html.Hidden("Page",null)
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Filtro" class="btn input-group" style="background-color: darkorange" />
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-md-center">
+                @*<a asp-action="CreateBono" class="btn col-md-3" style="background-color: darkorange">Crear uno nuevo bono</a>*@
+                <p class="text-end">Total: @Model.Bonos.TotalItemCount Bonos</p>
+            </div>
+        </div>
+    }
+    <div class="text-start">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Dia</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Hora</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Correo</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Bonos)
+                {
+                    <tr>
+                        <td>@item.Nombre @item.PrimerApellido</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@item.Date.Date.ToString("d")</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Date.TimeOfDay)</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Correo)</td>
+                        <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Teléfono)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3 d-flex">
+        <div>
+            @using (Html.BeginForm(FormMethod.Get))
+            {
+                @Html.Hidden("Page",(Model.PageCount)-1)
+                @Html.Hidden("SearchString",Model.SearchedString)
+                @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                <input type="submit" value="<<" class="btn input-group btn-primary btn-sm" />
+            }
+        </div>
+        <span style="margin: 5px">
+            Page @(Model.Bonos.PageCount
+            < Model.Bonos.PageNumber ? 0 : Model.Bonos.PageNumber) of @Model.Bonos.PageCount
+        </span>
+        <div>
+            @using (Html.BeginForm(FormMethod.Get))
+            {
+                @Html.Hidden("Page", (Model.PageCount)+1)
+                @Html.Hidden("SearchString",Model.SearchedString)
+                @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                <input type="submit" value=">>" class="btn input-group btn-primary btn-sm" />
+            }
+        </div>
+    </div>
+</div>

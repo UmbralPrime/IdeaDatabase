@@ -29,7 +29,6 @@ namespace Idea_Database_Interface.Controllers
         //This is to fill in the index page
         public IActionResult Index(string searchString, string filterSelect, int? page)
         {
-
             List<string> options = new();
             options.Add("Nombre");
             options.Add("Teléfono");
