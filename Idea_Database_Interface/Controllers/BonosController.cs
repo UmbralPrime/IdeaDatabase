@@ -18,7 +18,7 @@ namespace Idea_Database_Interface.Controllers
         {
             _uow = uow;
         }
-        public IActionResult Index(string searchString, string filterSelect, int? page)
+        public IActionResult Index(string searchString, string filterSelect, int? page, DateTime? filterDate)
         {
             List<string> options = new();
             options.Add("Nombre");
@@ -46,7 +46,10 @@ namespace Idea_Database_Interface.Controllers
                     default:
                         break;
                 }
+                
             }
+            if (filterDate != null)
+                bonos = bonos.Where(x => x.Date.Equals(filterDate.Value.Date)).ToList();
             //This is to prevent the searchbox from being erased
             ViewBag.SearchString = searchString;
             //Here you can change the amount of items on a page
@@ -63,7 +66,8 @@ namespace Idea_Database_Interface.Controllers
                 FilterOptions = filterOptions,
                 PageCount = pageNumber,
                 SearchedFilter = filterSelect,
-                SearchedString = searchString
+                SearchedString = searchString,
+                DateFilter = filterDate.GetValueOrDefault().Date
             };
             //This resets the pagenumber for the next and previous page buttons
             //Without this you can only change the page once

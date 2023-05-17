@@ -96,7 +96,16 @@
         </tbody>
     </table>
     <div class="col-md-3 d-flex">
-        <div>
+        <div style="margin: 5px">
+            @using (Html.BeginForm(FormMethod.Get))
+            {
+                @Html.Hidden("Page",1)
+                @Html.Hidden("SearchString",Model.SearchedString)
+                @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                <input type="submit" value="1" class="btn input-group btn-primary btn-sm" />
+            }
+        </div>
+        <div style ="margin: 5px">
             @using (Html.BeginForm(FormMethod.Get))
             {
                 @Html.Hidden("Page",(Model.PageCount)-1)
@@ -109,7 +118,7 @@
             Page @(Model.Emprendedores.PageCount
             < Model.Emprendedores.PageNumber ? 0 : Model.Emprendedores.PageNumber) of @Model.Emprendedores.PageCount
         </span>
-        <div>
+        <div style ="margin: 5px">
             @using (Html.BeginForm(FormMethod.Get))
             {
                 @Html.Hidden("Page", (Model.PageCount)+1)
@@ -118,6 +127,18 @@
                 <input type="submit" value=">>" class="btn input-group btn-primary btn-sm" />
             }
         </div>
+        @if (Model.Emprendedores.PageCount > 1)
+        {
+            <div style="margin: 5px">
+                @using (Html.BeginForm(FormMethod.Get))
+                {
+                    @Html.Hidden("Page",Model.Emprendedores.PageCount)
+                    @Html.Hidden("SearchString",Model.SearchedString)
+                    @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                    <input type="submit" value="@Model.Emprendedores.PageCount" class="btn input-group btn-primary btn-sm" />
+                }
+            </div>
+        }
     </div>
 </div>
 

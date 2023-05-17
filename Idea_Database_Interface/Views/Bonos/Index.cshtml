@@ -10,15 +10,18 @@
     {
         <div class="container">
             <div class="form-group row">
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <input type="date" value="@Model.DateFilter.GetValueOrDefault().ToString("yyy-MM-dd")" class="form-control" name="FilterDate" />
+                </div>
+                <div class="col-md-3">
                     @Html.DropDownList("FilterSelect",Model.FilterOptions, null,new {@class="form-select flex-column", @id="selectFilter"})
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     @Html.TextBox("SearchString",ViewBag.SearchString as string,new {@class="form-control"})
                     @*This is to reset the page to page 1 if you searched something new*@
                     @Html.Hidden("Page",null)
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="submit" value="Filtro" class="btn input-group" style="background-color: darkorange" />
                 </div>
             </div>
@@ -55,12 +58,23 @@
         </table>
     </div>
     <div class="col-md-3 d-flex">
-        <div>
+        <div style="margin: 5px">
+            @using (Html.BeginForm(FormMethod.Get))
+            {
+                @Html.Hidden("Page",1)
+                @Html.Hidden("SearchString",Model.SearchedString)
+                @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                @Html.Hidden("FilterDate", Model.DateFilter)
+                <input type="submit" value="1" class="btn input-group btn-primary btn-sm" />
+            }
+        </div>
+        <div style="margin: 5px">
             @using (Html.BeginForm(FormMethod.Get))
             {
                 @Html.Hidden("Page",(Model.PageCount)-1)
                 @Html.Hidden("SearchString",Model.SearchedString)
                 @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                @Html.Hidden("FilterDate", Model.DateFilter)
                 <input type="submit" value="<<" class="btn input-group btn-primary btn-sm" />
             }
         </div>
@@ -68,14 +82,28 @@
             Page @(Model.Bonos.PageCount
             < Model.Bonos.PageNumber ? 0 : Model.Bonos.PageNumber) of @Model.Bonos.PageCount
         </span>
-        <div>
+        <div style="margin: 5px">
             @using (Html.BeginForm(FormMethod.Get))
             {
                 @Html.Hidden("Page", (Model.PageCount)+1)
                 @Html.Hidden("SearchString",Model.SearchedString)
                 @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                @Html.Hidden("FilterDate", Model.DateFilter)
                 <input type="submit" value=">>" class="btn input-group btn-primary btn-sm" />
             }
         </div>
+        @if (Model.Bonos.PageCount > 1)
+        {
+            <div style="margin: 5px">
+                @using (Html.BeginForm(FormMethod.Get))
+                {
+                    @Html.Hidden("Page",Model.Bonos.PageCount)
+                    @Html.Hidden("SearchString",Model.SearchedString)
+                    @Html.Hidden("FilterSelect", Model.SearchedFilter)
+                    @Html.Hidden("FilterDate", Model.DateFilter)
+                    <input type="submit" value="@Model.Bonos.PageCount" class="btn input-group btn-primary btn-sm" />
+                }
+            </div>
+        }
     </div>
 </div>

@@ -8,6 +8,7 @@ namespace Idea_Database_Interface.Viewmodels
     {
         public IPagedList<Bonos> Bonos { get; set; }
         public SelectList FilterOptions { get; set; }
+        public DateTime? DateFilter { get; set; }
         public int PageCount { get; set; }
         public string? SearchedFilter { get; set; }
         public string? SearchedString { get; set; }
