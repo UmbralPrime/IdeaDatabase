@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Idea_Database_Interface.Models
 {
@@ -19,5 +20,20 @@ namespace Idea_Database_Interface.Models
         public string? TarjetaNum { get; set; }
         public string? NúmeroId { get; set; }
         public string? NúmeroId2 { get; set; }
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            bool same = true;
+            if (obj.GetType() != typeof(IQueryable<Bonos>))
+                return true;
+            IQueryable<Bonos> queryObj = obj as IQueryable<Bonos>;
+            queryObj.ForEachAsync(item =>
+            {
+                if (same)
+                    same = item.Date == this.Date && item.Nombre == this.Nombre
+                    && item.PrimerApellido == this.PrimerApellido;
+            });
+            return same;
+        }
     }
 }
