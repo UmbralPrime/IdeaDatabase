@@ -93,7 +93,7 @@ namespace Idea_Database_Interface.Controllers
                     //if(fileUpload.FileName==".xls"|| fileUpload.FileName==".xlsx")
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(),fileUpload.FileName);
                     DateTime yearTest = DateTime.Parse(fileUpload.FileName);
-                    using (var stream = System.IO.File.Create(filePath))
+                    using (var stream = System.IO.File.Create(filePath,4096,FileOptions.DeleteOnClose))
                     {
                         await fileUpload.CopyToAsync(stream);
                         WorkBook wb = WorkBook.FromStream(stream);
