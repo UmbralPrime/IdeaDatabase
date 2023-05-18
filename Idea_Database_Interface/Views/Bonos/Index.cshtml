@@ -27,7 +27,7 @@
             </div>
             <br />
             <div class="row justify-content-md-center">
-                @*<a asp-action="CreateBono" class="btn col-md-3" style="background-color: darkorange">Crear uno nuevo bono</a>*@
+                <a asp-action="CreateBono" class="btn col-md-3" style="background-color: darkorange">Crear uno nuevo bono</a>
                 <a asp-action="Import" class="btn col-md-3" style="background-color: darkorange">Importar datos</a>
                 <p class="text-end">Total: @Model.Bonos.TotalItemCount Bonos</p>
             </div>
@@ -42,6 +42,7 @@
                     <th scope="col" class="d-none d-sm-table-cell">Hora</th>
                     <th scope="col" class="d-none d-sm-table-cell">Correo</th>
                     <th scope="col" class="d-none d-sm-table-cell">Teléfono</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +54,7 @@
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Date.TimeOfDay)</td>
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Correo)</td>
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Teléfono)</td>
+                        <td><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" >Detalles</a></td>
                     </tr>
                 }
             </tbody>

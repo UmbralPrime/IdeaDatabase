@@ -1,0 +1,21 @@
+﻿@model Idea_Database_Interface.Viewmodels.BonosDetailsViewModel
+@{
+    ViewData["Title"] = "Bonos detalles página";
+}
+<h1>@Model.Bonos.Nombre @Model.Bonos.PrimerApellido @Model.Bonos.SegunodApellido</h1>
+<br />
+<p>Dia: @Model.Bonos.Date.Date.ToString("d")</p>
+<p>Hora: @Model.Bonos.Date.TimeOfDay</p>
+<p>Teléfono: @Model.Bonos.Teléfono</p>
+<p>Correo: @Model.Bonos.Correo</p>
+<p>DNI: @Model.Bonos.DNI</p>
+<p>Diréccion: @Model.Bonos.Direcction</p>
+<p>Codigo postal: @Model.Bonos.CódigoPostal</p>
+<p>Numéro de bonos: @Model.Bonos.NumeroDeBonos = €@(Model.Bonos.NumeroDeBonos*60)</p>
+<p>Número de tarjeta: @Model.Bonos.TarjetaNum</p>
+<p>Número id 1: @Model.Bonos.NúmeroId</p>
+<p>Número id 2: @Model.Bonos.NúmeroId2</p>
+
+<br />
+<a class="btn" style="background-color: dodgerblue" asp-action="UpdateBono" asp-route-id="@Model.Bonos.Id">Actualizar datos</a>
+<a asp-action="DeleteBono" asp-route-id="@Model.Bonos.Id" class="btn btn-danger">Borrar registro</a>

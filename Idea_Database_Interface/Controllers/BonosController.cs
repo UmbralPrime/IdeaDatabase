@@ -91,8 +91,8 @@ namespace Idea_Database_Interface.Controllers
                 if (fileUpload != null && fileUpload.Length > 0)
                 {
                     //if(fileUpload.FileName==".xls"|| fileUpload.FileName==".xlsx")
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(),fileUpload.FileName);
-                    using (var stream = System.IO.File.Create(filePath,4096,FileOptions.DeleteOnClose))
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileUpload.FileName);
+                    using (var stream = System.IO.File.Create(filePath, 4096, FileOptions.DeleteOnClose))
                     {
                         await fileUpload.CopyToAsync(stream);
                         WorkBook wb = WorkBook.FromStream(stream);
@@ -123,7 +123,7 @@ namespace Idea_Database_Interface.Controllers
                                         NúmeroId = row[13].ToString(),
                                         NúmeroId2 = row[14].ToString()
                                     };
-                                    if(!bonos.Equals(allDbBonos)) 
+                                    if (!bonos.Equals(allDbBonos))
                                         _uow.BonosRepository.Create(bonos);
                                 }
                                 await _uow.Save();
@@ -147,6 +147,21 @@ namespace Idea_Database_Interface.Controllers
                 AlertMessage = "Error al cargar el archivo"
             };
             return View(vm);
+        }
+        public IActionResult CreateBono()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateBono(BonoCrudViewModel model)
+        {
+            return View();
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            Bonos bono = await _uow.BonosRepository.GetById(id);
+            BonosDetailsViewModel viewModel = new BonosDetailsViewModel() { Bonos = bono };
+            return View(viewModel);
         }
     }
 }
