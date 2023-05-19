@@ -16,7 +16,7 @@
             <th scope="col">
                 @Html.DisplayNameFor(model => model.Users[0].Email)
             </th>
-            <th colspan="2" scope="col">
+            <th colspan="2">
                 Derechos de administrador
             </th>
         </tr>
@@ -38,7 +38,7 @@
                     }
                     else
                     {
-                        @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin")&& this.User.IsInRole("superadmin"))
+                        @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin") && this.User.IsInRole("superadmin"))
                         {
                             <a class="btn btn-primary col-md-6" asp-action="UserAddSuperAdmin" asp-route-id="@item.Id">Hacer super admin</a>
                         }
@@ -48,16 +48,15 @@
                         }
                     }
                 </td>
+                <td>
+                    @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
+                    {
 
-                @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
-                {
-                    <td>
                         <form asp-action="DeleteUser" method="post">
                             <input type="submit" class="btn btn-danger col-md-6" asp-action="DeleteUser" asp-route-id="@item.Id" value="Borrar" />
                         </form>
-                    </td>
-                }
-
+                    }
+                </td>
             </tr>
         }
     </tbody>
