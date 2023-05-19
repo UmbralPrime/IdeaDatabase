@@ -1,5 +1,98 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Idea_Database_Interface.Viewmodels.BonoCrudViewModel
 @{
+    ViewData["Title"] = "Actualizar bono";
 }
+<h1 class="mt-5">@ViewData["Title"]</h1>
+<div class="row mt-8">
+    <form asp-action="UpdateBono" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger" />
+        <div class="col-md-8">
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Date.Date" class="control-label">Día</label>
+                <input type="date" value=@Model.Date.ToString("yyyy-MM-dd") asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Date.TimeOfDay" class="control-label">Hora</label>
+                <input type="time" value=@Model.Date.TimeOfDay asp-for="Hours" class="form-control" />
+                <span asp-validation-for="Date.TimeOfDay" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre)</label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="PrimerApellido" class="control-label">Primer apellido</label>
+                <input asp-for="PrimerApellido" class="form-control" />
+                <span asp-validation-for="PrimerApellido" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="SegunodApellido" class="control-label">Segundo apellido</label>
+                <input asp-for="SegunodApellido" class="form-control" />
+                <span asp-validation-for="SegunodApellido" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Teléfono" class="control-label">@Html.DisplayNameFor(model => this.Model.Teléfono)</label>
+                <input asp-for="Teléfono" class="form-control" />
+                <span asp-validation-for="Teléfono" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Correo" class="control-label">@Html.DisplayNameFor(model => this.Model.Correo)</label>
+                <input type="email" asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="DNI" class="control-label">DNI</label>
+                <input asp-for="DNI" class="form-control" />
+                <span asp-validation-for="DNI" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Direcction" class="control-label">@Html.DisplayNameFor(model => this.Model.Direcction)</label>
+                <input asp-for="Direcction" class="form-control" />
+                <span asp-validation-for="Direcction" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="CódigoPostal" class="control-label">Código postal</label>
+                <input type="text" asp-for="CódigoPostal" class="form-control" />
+                <span asp-validation-for="CódigoPostal" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="TarjetaNum" class="control-label">Número de tarjeta</label>
+                <input type="text" asp-for="TarjetaNum" class="form-control" />
+                <span asp-validation-for="TarjetaNum" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="NúmeroId" class="control-label">Número id</label>
+                <input type="text" asp-for="NúmeroId" class="form-control" />
+                <span asp-validation-for="NúmeroId" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="NúmeroId2" class="control-label">Número id 2</label>
+                <input type="text" asp-for="NúmeroId2" class="form-control" />
+                <span asp-validation-for="NúmeroId2" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="NumeroDeBonos" class="control-label">Número de bonos</label>
+                <input onblur="join()" id="bonosNum" type="number" asp-for="NumeroDeBonos" class="form-control" />
+                <span asp-validation-for="NumeroDeBonos" class="text-danger"></span>
+                <label id="labelBonos">€@(Model.NumeroDeBonos * 60)</label>
+            </div>
+            <br />
+            <div class="form-group" style="padding: 10px">
+                <input type="submit" value="Actualizar" class="btn" style="background-color: aqua !important; color: white !important;" />
+                <a asp-action="Index" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript">
+    function join() {
+        document.getElementById("labelBonos").innerText =
+            "€" + document.getElementById("bonosNum").value * 60
+    }
+</script>
+
+
+

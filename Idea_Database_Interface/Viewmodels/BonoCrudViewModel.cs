@@ -2,6 +2,7 @@
 {
     public class BonoCrudViewModel
     {
+        public int? Id { get; set; }
         public DateTime Date { get; set; }
         public string Nombre { get; set; }
         public string PrimerApellido { get; set; }
@@ -15,5 +16,6 @@
         public string? TarjetaNum { get; set; }
         public string? NúmeroId { get; set; }
         public string? NúmeroId2 { get; set; }
+        public TimeSpan Hours { get; set; }
     }
 }

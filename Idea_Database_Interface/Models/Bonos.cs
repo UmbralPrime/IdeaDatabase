@@ -20,16 +20,16 @@ namespace Idea_Database_Interface.Models
         public string? TarjetaNum { get; set; }
         public string? NúmeroId { get; set; }
         public string? NúmeroId2 { get; set; }
-        public override bool Equals(object? obj)
+        public async Task<bool> EqualsAsync(object? obj)
         {
             if (obj == null) return false;
-            bool same = true;
-            if (obj.GetType() != typeof(IQueryable<Bonos>))
-                return true;
+            bool same = false;
             IQueryable<Bonos> queryObj = obj as IQueryable<Bonos>;
-            queryObj.ForEachAsync(item =>
+            if(queryObj.Count()==0)
+                return false;
+            await queryObj.ForEachAsync(item =>
             {
-                if (same)
+                if (!same)
                     same = item.Date == this.Date && item.Nombre == this.Nombre
                     && item.PrimerApellido == this.PrimerApellido;
             });

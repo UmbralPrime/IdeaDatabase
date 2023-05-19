@@ -27,8 +27,9 @@ namespace Idea_Database_Interface.Controllers
             options.Add("Nombre");
             options.Add("Teléfono");
             options.Add("Correo");
+            options.Add("DNI");
             SelectList filterOptions = new SelectList(options);
-            IEnumerable<Bonos> bonos = _uow.BonosRepository.GetAll().ToList().OrderBy(x => x.Nombre);
+            IEnumerable<Bonos> bonos = _uow.BonosRepository.GetAll().ToList().OrderBy(x => x.Date);
 
             //filters based on the input of the searchstring and the selected filter
             //if the search string is empty it will just show all the companies
@@ -46,12 +47,15 @@ namespace Idea_Database_Interface.Controllers
                     case "Correo":
                         bonos = bonos.Where(x => x.Correo.ToLower().Contains(searchString)).ToList();
                         break;
+                    case "DNI":
+                        bonos = bonos.Where(x => x.DNI.ToLower().Contains(searchString)).ToList();
+                        break;
                     default:
                         break;
                 }
 
             }
-            if (filterDate != null)
+            if (filterDate != null && filterDate != DateTime.MinValue)
                 bonos = bonos.Where(x => x.Date.Equals(filterDate.Value.Date)).ToList();
             //This is to prevent the searchbox from being erased
             ViewBag.SearchString = searchString;
@@ -84,8 +88,10 @@ namespace Idea_Database_Interface.Controllers
             return View(vm);
         }
         [HttpPost]
-        public async Task<IActionResult> Import(IFormFile fileUpload)
+        public async Task<IActionResult> Import(IFormFile fileUpload, int dateYear)
         {
+            IQueryable<Bonos> allDbBonos = _uow.BonosRepository.GetAll();
+            IEnumerable<Bonos> DbBonos = allDbBonos;
             try
             {
                 if (fileUpload != null && fileUpload.Length > 0)
@@ -97,16 +103,17 @@ namespace Idea_Database_Interface.Controllers
                         await fileUpload.CopyToAsync(stream);
                         WorkBook wb = WorkBook.FromStream(stream);
                         DataSet dataSet = wb.ToDataSet();
-                        IQueryable<Bonos> allDbBonos = _uow.BonosRepository.GetAll();
                         foreach (DataTable table in dataSet.Tables)
                         {
-                            DateTime tableTime = DateTime.Parse($"{table.TableName} {DateTime.Now.Year}", new CultureInfo("es-ES"));
+                            DateTime tableTime = DateTime.Parse($"{table.TableName} {dateYear}", new CultureInfo("es-ES"));
                             foreach (DataRow row in table.Rows)
                             {
                                 if (row[1].ToString() != "Hora" && row[4].ToString() != "TOTAl" && !string.IsNullOrEmpty(row[3].ToString()))
                                 {
                                     TimeSpan hour = DateTime.Parse(row[1].ToString()).TimeOfDay;
                                     DateTime usedTime = tableTime + hour;
+                                    int numeroBonos = 0;
+                                    int.TryParse(row[6].ToString(), out numeroBonos);
                                     Bonos bonos = new Bonos()
                                     {
                                         Date = usedTime,
@@ -115,7 +122,7 @@ namespace Idea_Database_Interface.Controllers
                                         Nombre = row[2].ToString(),
                                         PrimerApellido = row[3].ToString(),
                                         SegunodApellido = row[4].ToString(),
-                                        NumeroDeBonos = int.Parse(row[6].ToString()),
+                                        NumeroDeBonos = numeroBonos,
                                         Correo = row[8].ToString(),
                                         CódigoPostal = row[10].ToString(),
                                         Teléfono = row[11].ToString(),
@@ -123,10 +130,12 @@ namespace Idea_Database_Interface.Controllers
                                         NúmeroId = row[13].ToString(),
                                         NúmeroId2 = row[14].ToString()
                                     };
-                                    if (!bonos.Equals(allDbBonos))
+                                    if (await bonos.EqualsAsync(allDbBonos) == false)
+                                    {
                                         _uow.BonosRepository.Create(bonos);
+                                        await _uow.Save();
+                                    }
                                 }
-                                await _uow.Save();
                             }
                         }
                         stream.Dispose();
@@ -150,18 +159,99 @@ namespace Idea_Database_Interface.Controllers
         }
         public IActionResult CreateBono()
         {
-            return View();
+            BonoCrudViewModel vm = new BonoCrudViewModel();
+            return View(vm);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateBono(BonoCrudViewModel model)
+        public async Task<IActionResult> CreateBono(BonoCrudViewModel bono)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Bonos toAdd = new Bonos()
+                {
+                    Nombre = bono.Nombre,
+                    PrimerApellido = bono.PrimerApellido,
+                    DNI = bono.DNI,
+                    Date = bono.Date,
+                    Direcction = bono.Direcction,
+                    NumeroDeBonos = bono.NumeroDeBonos,
+                    Correo = bono.Correo,
+                    CódigoPostal = bono.CódigoPostal,
+                    NúmeroId = bono.NúmeroId,
+                    NúmeroId2 = bono.NúmeroId2,
+                    SegunodApellido = bono.SegunodApellido,
+                    TarjetaNum = bono.TarjetaNum,
+                    Teléfono = bono.Teléfono
+                };
+                _uow.BonosRepository.Create(toAdd);
+                await _uow.Save();
+                return RedirectToAction("Index");
+            }
+            return View(bono);
         }
         public async Task<IActionResult> Details(int id)
         {
             Bonos bono = await _uow.BonosRepository.GetById(id);
             BonosDetailsViewModel viewModel = new BonosDetailsViewModel() { Bonos = bono };
             return View(viewModel);
+        }
+        public async Task<IActionResult> UpdateBono(int id)
+        {
+            Bonos bono = await _uow.BonosRepository.GetById(id);
+            BonoCrudViewModel viewModel = new BonoCrudViewModel()
+            {
+                Nombre = bono.Nombre,
+                PrimerApellido = bono.PrimerApellido,
+                DNI = bono.DNI,
+                Date = bono.Date,
+                Direcction = bono.Direcction,
+                NumeroDeBonos = bono.NumeroDeBonos,
+                Correo = bono.Correo,
+                CódigoPostal = bono.CódigoPostal,
+                NúmeroId = bono.NúmeroId,
+                NúmeroId2 = bono.NúmeroId2,
+                SegunodApellido = bono.SegunodApellido,
+                TarjetaNum = bono.TarjetaNum,
+                Teléfono = bono.Teléfono,
+                Id = bono.Id
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateBono(int id, BonoCrudViewModel bono)
+        {
+            if (ModelState.IsValid)
+            {
+                Bonos toUpdate = new Bonos()
+                {
+                    Nombre = bono.Nombre,
+                    PrimerApellido = bono.PrimerApellido,
+                    DNI = bono.DNI,
+                    Date = bono.Date + bono.Hours,
+                    Direcction = bono.Direcction,
+                    NumeroDeBonos = bono.NumeroDeBonos,
+                    Correo = bono.Correo,
+                    CódigoPostal = bono.CódigoPostal,
+                    NúmeroId = bono.NúmeroId,
+                    NúmeroId2 = bono.NúmeroId2,
+                    SegunodApellido = bono.SegunodApellido,
+                    TarjetaNum = bono.TarjetaNum,
+                    Teléfono = bono.Teléfono,
+                    Id = id
+                };
+                _uow.BonosRepository.Update(toUpdate);
+                await _uow.Save();
+                return RedirectToAction("Index");
+            }
+
+            return View(bono);
+        }
+        public async Task<IActionResult> DeleteBono(int id)
+        {
+            Bonos toDel = await _uow.BonosRepository.GetById(id);
+            _uow.BonosRepository.Delete(toDel);
+            await _uow.Save();
+            return RedirectToAction("Index");
         }
     }
 }
