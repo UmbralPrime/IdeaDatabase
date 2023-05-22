@@ -4,6 +4,5 @@
     {
         public IFormFile? FormFile { get; set; }
         public string? AlertMessage { get; set; }
-        public DateTime Year { get; set; }
     }
 }

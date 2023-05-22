@@ -29,6 +29,7 @@ namespace Idea_Database_Interface.Controllers
             options.Add("Teléfono");
             options.Add("Correo");
             options.Add("DNI");
+            options.Add("Localizador");
             SelectList filterOptions = new SelectList(options);
             IEnumerable<Bonos> bonos = _uow.BonosRepository.GetAll().ToList().OrderBy(x => x.Date);
 
@@ -40,7 +41,7 @@ namespace Idea_Database_Interface.Controllers
                 switch (filterSelect)
                 {
                     case "Nombre":
-                        bonos = bonos.Where(x => x.Nombre.ToLower().Contains(searchString)).ToList();
+                        bonos = bonos.Where(x => x.Nombre.ToLower().Contains(searchString) || x.PrimerApellido.ToLower().Contains(searchString) || x.SegunodApellido.ToLower().Contains(searchString)).ToList();
                         break;
                     case "Teléfono":
                         bonos = bonos.Where(x => x.Teléfono.Contains(searchString)).ToList();
@@ -51,13 +52,16 @@ namespace Idea_Database_Interface.Controllers
                     case "DNI":
                         bonos = bonos.Where(x => x.DNI.ToLower().Contains(searchString)).ToList();
                         break;
+                    case "Localizador":
+                        bonos = bonos.Where(x=>x.Localizador.ToLower().Contains(searchString)).ToList();
+                        break;
                     default:
                         break;
                 }
 
             }
             if (filterDate != null && filterDate != DateTime.MinValue)
-                bonos = bonos.Where(x => x.Date.Equals(filterDate.Value.Date)).ToList();
+                bonos = bonos.Where(x => x.Date.Date.Equals(filterDate.Value.Date)).ToList();
             //This is to prevent the searchbox from being erased
             ViewBag.SearchString = searchString;
             //Here you can change the amount of items on a page
@@ -75,7 +79,7 @@ namespace Idea_Database_Interface.Controllers
                 PageCount = pageNumber,
                 SearchedFilter = filterSelect,
                 SearchedString = searchString,
-                DateFilter = filterDate.GetValueOrDefault().Date
+                DateFilter = filterDate.GetValueOrDefault().Date,
             };
             //This resets the pagenumber for the next and previous page buttons
             //Without this you can only change the page once
@@ -89,7 +93,7 @@ namespace Idea_Database_Interface.Controllers
             return View(vm);
         }
         [HttpPost]
-        public async Task<IActionResult> Import(IFormFile fileUpload, int dateYear)
+        public async Task<IActionResult> Import(IFormFile fileUpload)
         {
             IQueryable<Bonos> allDbBonos = _uow.BonosRepository.GetAll();
             IEnumerable<Bonos> DbBonos = allDbBonos;
@@ -101,7 +105,7 @@ namespace Idea_Database_Interface.Controllers
                     if (ext != ".xls" && ext != ".xlsx")
                         return View(new FileUpload() { AlertMessage = "El archivo no tiene formato .xls o .xlsx" });
                     ExcelToDatabase toDb = new ExcelToDatabase(_uow);
-                    await toDb.ImportToDatabaseAsync(fileUpload, dateYear);
+                    await toDb.ImportToDatabaseAsync(fileUpload);
                     return RedirectToAction("Index");
                 }
             }

@@ -4,14 +4,15 @@
 }
 
 <div>
-    <h1 class="display-4">Bonos</h1>
+    @*<h1 class="display-4">Bonos</h1>*@
+    <img class="img-fluid" src="~/img/banner_BonsComerç.png" />
     <br />
     @using (Html.BeginForm())
     {
-        <div class="container">
+        <div class="container" style="margin: 10px">
             <div class="form-group row">
                 <div class="col-md-3">
-                    <input type="date" value="@Model.DateFilter.GetValueOrDefault().ToString("yyy-MM-dd")" class="form-control" name="FilterDate" />
+                    <input type="date" value="@Model.DateFilter.Value.ToString("yyy-MM-dd")" class="form-control" name="FilterDate" />
                 </div>
                 <div class="col-md-3">
                     @Html.DropDownList("FilterSelect",Model.FilterOptions, null,new {@class="form-select flex-column", @id="selectFilter"})
@@ -50,13 +51,13 @@
                 @foreach (var item in Model.Bonos)
                 {
                     <tr>
-                        <td>@item.Nombre @item.PrimerApellido</td>
+                        <td>@item.Nombre @item.PrimerApellido @item.SegunodApellido</td>
                         <td scope="col" class="d-none d-sm-table-cell">@item.Date.Date.ToString("d")</td>
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Date.TimeOfDay)</td>
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Correo)</td>
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.Teléfono)</td>
                         <td scope="col" class="d-none d-sm-table-cell">@Html.DisplayFor(modelItem=>item.DNI)</td>
-                        <td><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" >Detalles</a></td>
+                        <td><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalles</a></td>
                     </tr>
                 }
             </tbody>
@@ -69,7 +70,7 @@
                 @Html.Hidden("Page",1)
                 @Html.Hidden("SearchString",Model.SearchedString)
                 @Html.Hidden("FilterSelect", Model.SearchedFilter)
-                @Html.Hidden("FilterDate", Model.DateFilter)
+                <input type="hidden" value="@Model.DateFilter.Value.ToString("yyyy-MM-dd")" name="FilterDate" />
                 <input type="submit" value="1" class="btn input-group btn-primary btn-sm" />
             }
         </div>
@@ -79,7 +80,7 @@
                 @Html.Hidden("Page",(Model.PageCount)-1)
                 @Html.Hidden("SearchString",Model.SearchedString)
                 @Html.Hidden("FilterSelect", Model.SearchedFilter)
-                @Html.Hidden("FilterDate", Model.DateFilter)
+                <input type="hidden" value="@Model.DateFilter.Value.ToString("yyyy-MM-dd")" name="FilterDate" />
                 <input type="submit" value="<<" class="btn input-group btn-primary btn-sm" />
             }
         </div>
@@ -93,7 +94,7 @@
                 @Html.Hidden("Page", (Model.PageCount)+1)
                 @Html.Hidden("SearchString",Model.SearchedString)
                 @Html.Hidden("FilterSelect", Model.SearchedFilter)
-                @Html.Hidden("FilterDate", Model.DateFilter)
+                <input type="hidden" value="@Model.DateFilter.Value.ToString("yyyy-MM-dd")" name="FilterDate" />
                 <input type="submit" value=">>" class="btn input-group btn-primary btn-sm" />
             }
         </div>
@@ -105,7 +106,7 @@
                     @Html.Hidden("Page",Model.Bonos.PageCount)
                     @Html.Hidden("SearchString",Model.SearchedString)
                     @Html.Hidden("FilterSelect", Model.SearchedFilter)
-                    @Html.Hidden("FilterDate", Model.DateFilter)
+                    <input type="hidden" value="@Model.DateFilter.Value.ToString("yyyy-MM-dd")" name="FilterDate" />
                     <input type="submit" value="@Model.Bonos.PageCount" class="btn input-group btn-primary btn-sm" />
                 }
             </div>

@@ -4,6 +4,7 @@ using Idea_Database_Interface.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Idea_Database_Interface.Migrations
 {
     [DbContext(typeof(IdeaDBContext))]
-    partial class IdeaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230522074624_Add localizador to bonos")]
+    partial class Addlocalizadortobonos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,10 +64,6 @@ namespace Idea_Database_Interface.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Direcction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Localidad")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Localizador")

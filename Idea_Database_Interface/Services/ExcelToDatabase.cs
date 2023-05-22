@@ -2,6 +2,7 @@
 using Idea_Database_Interface.Models;
 using Idea_Database_Interface.Viewmodels;
 using IronXL;
+using Microsoft.AspNetCore.Identity;
 using System.Data;
 using System.Globalization;
 
@@ -11,7 +12,7 @@ namespace Idea_Database_Interface.Services
     {
         private readonly IUnitOfWork _uow;
         public ExcelToDatabase(IUnitOfWork uow) { _uow = uow; }
-        public async Task ImportToDatabaseAsync(IFormFile fileUpload, int dateYear)
+        public async Task ImportToDatabaseAsync(IFormFile fileUpload)
         {
             IQueryable<Bonos> allDbBonos = _uow.BonosRepository.GetAll();
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileUpload.FileName);
@@ -22,30 +23,27 @@ namespace Idea_Database_Interface.Services
                 DataSet dataSet = wb.ToDataSet();
                 foreach (DataTable table in dataSet.Tables)
                 {
-                    DateTime tableTime = DateTime.Parse($"{table.TableName} {dateYear}", new CultureInfo("es-ES"));
                     foreach (DataRow row in table.Rows)
                     {
-                        if (row[1].ToString() != "Hora" && row[4].ToString() != "TOTAl" && !string.IsNullOrEmpty(row[3].ToString()))
+                        if (row[16].ToString() == "Confirmada")
                         {
-                            TimeSpan hour = DateTime.Parse(row[1].ToString()).TimeOfDay;
-                            DateTime usedTime = tableTime + hour;
-                            int numeroBonos = 0;
-                            int.TryParse(row[6].ToString(), out numeroBonos);
+                            TimeSpan hour = DateTime.Parse(row[9].ToString()).TimeOfDay;
+                            DateTime usedTime = DateTime.Parse(row[8].ToString());
                             Bonos bonos = new Bonos()
                             {
-                                Date = usedTime,
-                                Direcction = row[9].ToString(),
-                                DNI = row[5].ToString(),
-                                Nombre = row[2].ToString(),
-                                PrimerApellido = row[3].ToString(),
-                                SegunodApellido = row[4].ToString(),
-                                NumeroDeBonos = numeroBonos,
-                                Correo = row[8].ToString(),
-                                CódigoPostal = row[10].ToString(),
-                                Teléfono = row[11].ToString(),
-                                TarjetaNum = row[12].ToString(),
-                                NúmeroId = row[13].ToString(),
-                                NúmeroId2 = row[14].ToString()
+                                Date = usedTime + hour,
+                                Direcction = row[22].ToString(),
+                                DNI = row[17].ToString(),
+                                Nombre = row[1].ToString(),
+                                PrimerApellido = row[20].ToString(),
+                                SegunodApellido = row[21].ToString(),
+                                NumeroDeBonos = 0,
+                                Correo = row[4].ToString(),
+                                CódigoPostal = row[5].ToString(),
+                                Localidad = row[18].ToString(),
+                                Localizador = row[19].ToString(),
+                                Teléfono = row[3].ToString()
+
                             };
                             if (await bonos.EqualsAsync(allDbBonos) == false)
                             {

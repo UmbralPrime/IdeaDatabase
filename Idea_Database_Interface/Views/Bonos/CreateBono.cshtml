@@ -58,6 +58,12 @@
                 <span asp-validation-for="CódigoPostal" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
+                <label asp-for="NumeroDeBonos" class="control-label">Número de bonos</label>
+                <input onblur="join()" id="bonosNum" type="number" asp-for="NumeroDeBonos" class="form-control" />
+                <span asp-validation-for="NumeroDeBonos" class="text-danger"></span>
+                <label id="labelBonos">€@(Model.NumeroDeBonos * 60)</label>
+            </div>
+            <div class="form-group" style="padding: 10px">
                 <label asp-for="TarjetaNum" class="control-label">Número de tarjeta</label>
                 <input type="text" asp-for="TarjetaNum" class="form-control" />
                 <span asp-validation-for="TarjetaNum" class="text-danger"></span>
@@ -71,12 +77,6 @@
                 <label asp-for="NúmeroId2" class="control-label">Número id 2</label>
                 <input type="text" asp-for="NúmeroId2" class="form-control" />
                 <span asp-validation-for="NúmeroId2" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding: 10px">
-                <label asp-for="NumeroDeBonos" class="control-label">Número de bonos</label>
-                <input onblur="join()" id="bonosNum" type="number" asp-for="NumeroDeBonos" class="form-control" />
-                <span asp-validation-for="NumeroDeBonos" class="text-danger"></span>
-                <label id="labelBonos">€@(Model.NumeroDeBonos*60)</label>
             </div>
             <br />
             <div class="form-group" style="padding: 10px">

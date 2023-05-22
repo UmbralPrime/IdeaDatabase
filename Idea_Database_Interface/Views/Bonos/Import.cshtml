@@ -18,10 +18,6 @@
                 <input class="form-control" asp-for="@Model.FormFile" type="file" name="FileUpload">
                 <span asp-validation-for="@Model.FormFile"></span>
             </div>
-            <div class="col-md-3" style="margin: 5px">
-                <label>Año</label>
-                <input asp-for="Year" class="form-control" name="DateYear" type="number" min="1900" max="2099" value=@DateTime.Now.Year />
-            </div>
         </div>
         <input asp-page-handler="Upload" class="btn btn-primary" type="submit" value="Enviar" style="margin: 5px" />
     </div>
