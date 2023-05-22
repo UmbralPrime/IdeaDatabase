@@ -8,7 +8,6 @@ namespace Idea_Database_Interface.Models
         [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        [Required(ErrorMessage ="Este campo es obligatorio.")]
         public string Nombre { get; set; }
         public string PrimerApellido { get; set; }
         public string? SegunodApellido { get; set; }
