@@ -53,7 +53,7 @@ namespace Idea_Database_Interface.Controllers
                         bonos = bonos.Where(x => x.DNI.ToLower().Contains(searchString)).ToList();
                         break;
                     case "Localizador":
-                        bonos = bonos.Where(x=>x.Localizador.ToLower().Contains(searchString)).ToList();
+                        bonos = bonos.Where(x => x.Localizador.ToLower().Contains(searchString)).ToList();
                         break;
                     default:
                         break;
@@ -96,7 +96,6 @@ namespace Idea_Database_Interface.Controllers
         public async Task<IActionResult> Import(IFormFile fileUpload)
         {
             IQueryable<Bonos> allDbBonos = _uow.BonosRepository.GetAll();
-            IEnumerable<Bonos> DbBonos = allDbBonos;
             try
             {
                 if (fileUpload != null && fileUpload.Length > 0)
@@ -218,6 +217,22 @@ namespace Idea_Database_Interface.Controllers
             _uow.BonosRepository.Delete(toDel);
             await _uow.Save();
             return RedirectToAction("Index");
+        }
+        public IActionResult ExportDatabase()
+        {
+            ExportDBDateViewModel vm = new ExportDBDateViewModel()
+            {
+                From = DateTime.Now.Date,
+                Untill = DateTime.Now.Date
+            };
+            return View(vm);
+        }
+        [HttpPost]
+        public IActionResult ExportDatabase(DateTime from, DateTime untill)
+        {
+            IQueryable<Bonos> bonos = _uow.BonosRepository.GetAll().Where(x=>x.Date>from&&x.Date<untill);
+            ExportData export = new ExportData(bonos);
+            return export.DownloadExcelDb();
         }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model Idea_Database_Interface.Viewmodels.ExportDBDateViewModel
+<form method="post" asp-action="ExportDatabase">
+    <div class="row">
+        <div class="col-md-3">
+            <label>De</label>
+            <input name="From" class="form-control" type="date" value="@Model.From" />
+        </div>
+        <div class="col-md-3">
+            <label>Hasta</label>
+            <input name="Untill" class="form-control" type="date" value="@Model.Untill" />            
+        </div>
+    </div>    
+    <input type="submit" value="Export" class="btn" style="background-color: aqua !important; color: white !important;" />
+</form>
