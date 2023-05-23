@@ -8,17 +8,17 @@
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Mensaje" class="control-label">@Html.DisplayNameFor(model => this.Model.Mensaje)</label>
+                <label asp-for="Mensaje" class="control-label">@Html.DisplayNameFor(model => this.Model.Mensaje) <span class="text-danger">*</span></label>
                 <textarea asp-for="Mensaje" class="form-control"></textarea>
                 <span asp-validation-for="Mensaje" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Cuando" class="control-label">@Html.DisplayNameFor(model => this.Model.Cuando)</label>
+                <label asp-for="Cuando" class="control-label">@Html.DisplayNameFor(model => this.Model.Cuando) <span class="text-danger">*</span></label>
                 <input type="datetime" value=@DateTime.Now asp-for="Cuando" class="form-control" />
                 <span asp-validation-for="Cuando" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Remitente" class="control-label">@Html.DisplayNameFor(model => this.Model.Remitente)</label>
+                <label asp-for="Remitente" class="control-label">@Html.DisplayNameFor(model => this.Model.Remitente) <span class="text-danger">*</span></label>
                 <input asp-for="Remitente" class="form-control" />
                 <span asp-validation-for="Remitente" class="text-danger"></span>
             </div>

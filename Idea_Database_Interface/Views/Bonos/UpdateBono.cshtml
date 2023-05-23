@@ -8,7 +8,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Date.Date" class="control-label">Día <span style="color: red">*</span></label>
+                <label asp-for="Date.Date" class="control-label">Día <span class="text-danger">*</span></label>
                 <input type="date" value=@Model.Date.ToString("yyyy-MM-dd") asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
@@ -18,12 +18,12 @@
                 <span asp-validation-for="Date.TimeOfDay" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre)</label>
+                <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre) <span class="text-danger">*</span></label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="PrimerApellido" class="control-label">Primer apellido</label>
+                <label asp-for="PrimerApellido" class="control-label">Primer apellido <span class="text-danger">*</span></label>
                 <input asp-for="PrimerApellido" class="form-control" />
                 <span asp-validation-for="PrimerApellido" class="text-danger"></span>
             </div>
@@ -38,12 +38,12 @@
                 <span asp-validation-for="Teléfono" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Correo" class="control-label">@Html.DisplayNameFor(model => this.Model.Correo)</label>
+                <label asp-for="Correo" class="control-label">@Html.DisplayNameFor(model => this.Model.Correo) <span class="text-danger">*</span></label>
                 <input type="email" asp-for="Correo" class="form-control" />
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="DNI" class="control-label">DNI</label>
+                <label asp-for="DNI" class="control-label">DNI <span class="text-danger">*</span></label>
                 <input asp-for="DNI" class="form-control" />
                 <span asp-validation-for="DNI" class="text-danger"></span>
             </div>

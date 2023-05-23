@@ -4,8 +4,11 @@ namespace Idea_Database_Interface.Viewmodels
 {
     public class CreateEmpresaView
     {
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
         public DateTime FechaDeAlta { get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
         public string CIF { get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
         public string Nombre { get; set; }
         public string? Tamaño { get; set; }
         public string? CNAE { get; set; }

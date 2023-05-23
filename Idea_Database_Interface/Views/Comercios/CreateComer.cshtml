@@ -8,22 +8,22 @@
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
-                <label asp-for="NombreComercial" class="control-label">Nombre comercial</label>
+                <label asp-for="NombreComercial" class="control-label">Nombre comercial <span class="text-danger">*</span></label>
                 <input asp-for="NombreComercial" class="form-control" />
                 <span asp-validation-for="NombreComercial" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="IAE" class="control-label">IAE</label>
+                <label asp-for="IAE" class="control-label">IAE <span class="text-danger">*</span></label>
                 <input asp-for="IAE" class="form-control" />
                 <span asp-validation-for="IAE" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Email" class="control-label">@Html.DisplayNameFor(model => this.Model.Email)</label>
+                <label asp-for="Email" class="control-label">@Html.DisplayNameFor(model => this.Model.Email) <span class="text-danger">*</span></label>
                 <input type="email" asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="CIF" class="control-label">@Html.DisplayNameFor(model => this.Model.CIF)</label>
+                <label asp-for="CIF" class="control-label">@Html.DisplayNameFor(model => this.Model.CIF) <span class="text-danger">*</span></label>
                 <input asp-for="CIF" class="form-control" />
                 <span asp-validation-for="CIF" class="text-danger"></span>
             </div>
@@ -38,7 +38,7 @@
                 <span asp-validation-for="TeléfonoFijo" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Móvi" class="control-label">@Html.DisplayNameFor(model => this.Model.Móvi)</label>
+                <label asp-for="Móvi" class="control-label">@Html.DisplayNameFor(model => this.Model.Móvi) <span class="text-danger">*</span></label>
                 <input type="text" asp-for="Móvi" class="form-control" />
                 <span asp-validation-for="Móvi" class="text-danger"></span>
             </div>

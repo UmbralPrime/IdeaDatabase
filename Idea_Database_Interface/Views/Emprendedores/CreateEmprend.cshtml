@@ -8,32 +8,32 @@
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Fecha.Date" class="control-label">Día</label>
+                <label asp-for="Fecha.Date" class="control-label">Día <span class="text-danger">*</span></label>
                 <input type="date" value=@DateTime.Now.ToShortDateString() asp-for="Fecha" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="FechaHora" class="control-label">Hora</label>
+                <label asp-for="FechaHora" class="control-label">Hora <span class="text-danger">*</span></label>
                 <input type="time" value=@DateTime.Now.TimeOfDay asp-for="FechaHora" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre)</label>
+                <label asp-for="Nombre" class="control-label">@Html.DisplayNameFor(model => this.Model.Nombre) <span class="text-danger">*</span>   </label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Apellidos" class="control-label">@Html.DisplayNameFor(model => this.Model.Apellidos)</label>
+                <label asp-for="Apellidos" class="control-label">@Html.DisplayNameFor(model => this.Model.Apellidos) <span class="text-danger">*</span></label>
                 <input asp-for="Apellidos" class="form-control" />
                 <span asp-validation-for="Apellidos" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Teléfono" class="control-label">@Html.DisplayNameFor(model => this.Model.Teléfono)</label>
+                <label asp-for="Teléfono" class="control-label">@Html.DisplayNameFor(model => this.Model.Teléfono) <span class="text-danger">*</span></label>
                 <input asp-for="Teléfono" class="form-control" />
                 <span asp-validation-for="Teléfono" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Email" class="control-label">@Html.DisplayNameFor(model => this.Model.Email)</label>
+                <label asp-for="Email" class="control-label">@Html.DisplayNameFor(model => this.Model.Email) <span class="text-danger">*</span></label>
                 <input type="email" asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
