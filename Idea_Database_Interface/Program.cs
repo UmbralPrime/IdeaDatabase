@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Drawing.Text;
 using System.Globalization;
@@ -34,6 +35,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         };
 });
 #endregion
+var syncfusionKey = builder.Configuration.GetConnectionString("SyncFusion");
 builder.Services.AddControllersWithViews().AddViewLocalization().AddMvcLocalization().AddDataAnnotationsLocalization();
 builder.Services.AddDbContext<IdeaDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IdeaDb")));
 builder.Services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<IdeaDBContext>();
@@ -41,6 +43,7 @@ builder.Services.AddScoped<IGenericRepository<Empresa>, GenericRepository<Empres
 builder.Services.AddScoped<IGenericRepository<Correspondencia>, GenericRepository<Correspondencia>>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddRazorPages();
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionKey);
 
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
