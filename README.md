@@ -4,3 +4,5 @@ This webapplication serves as a database interface for a better communication wi
 In case you have questions about the code or if you have a problem you can contact me on: stef.pelkmans@gmail.com
 
 The appsettings.json file can be found on the server the database is hosted on, you will need it so the application can have access to the database with the connectionstring.
+
+Additional information can be found in the document explaining the websites on the database archive.
