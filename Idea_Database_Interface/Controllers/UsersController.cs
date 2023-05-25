@@ -75,5 +75,12 @@ namespace Idea_Database_Interface.Controllers
             IdentityResult result = await _userManager.AddToRoleAsync(user, role.Name);
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> DeleteSuperAdminRole(string id)
+        {
+            IdentityRole role = await _roleManager.FindByNameAsync("superadmin");
+            IdentityUser user = await _userManager.FindByIdAsync(id);
+            IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+            return RedirectToAction("Index");
+        }
     }
 }

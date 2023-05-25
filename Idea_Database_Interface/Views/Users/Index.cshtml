@@ -32,30 +32,42 @@
                     @item.Email
                 </td>
                 <td>
-                    @if (!await Model.UserManager.IsInRoleAsync(item, "admin"))
-                    {
-                        <a class="btn btn-primary col-md-6" asp-action="UserAddAdmin" asp-route-id="@item.Id">Hacer admin</a>
-                    }
-                    else
-                    {
-                        @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin") && this.User.IsInRole("superadmin"))
+                    <div class="text-center">
+                        @if (!await Model.UserManager.IsInRoleAsync(item, "admin"))
                         {
-                            <a class="btn btn-primary col-md-6" asp-action="UserAddSuperAdmin" asp-route-id="@item.Id">Hacer super admin</a>
+                            <a class="btn btn-primary col-md-6" asp-action="UserAddAdmin" asp-route-id="@item.Id">Hacer admin</a>
                         }
                         else
                         {
-                            <span>Super admin</span>
+                            @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin") && this.User.IsInRole("superadmin"))
+                            {
+                                <a class="btn btn-primary col-md-6" asp-action="UserAddSuperAdmin" asp-route-id="@item.Id">Hacer super admin</a>
+                            }
+                            else
+                            {
+                                <span>Super admin</span>
+                            }
                         }
-                    }
+                    </div>
+
                 </td>
                 <td>
-                    @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
-                    {
+                    <div class="text-center">
+                        @if (!await Model.UserManager.IsInRoleAsync(item, "superadmin"))
+                        {
 
-                        <form asp-action="DeleteUser" method="post">
-                            <input type="submit" class="btn btn-danger col-md-6" asp-action="DeleteUser" asp-route-id="@item.Id" value="Borrar" />
-                        </form>
-                    }
+                            <form asp-action="DeleteUser" method="post">
+                                <input type="submit" class="btn btn-danger col-md-6" asp-action="DeleteUser" asp-route-id="@item.Id" value="Borrar" />
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="DeleteSuperAdminRole" method="post">
+                                <input type="submit" class="btn btn-danger" asp-action="DeleteSuperAdminRole" asp-route-id="@item.Id" value="Borrar superadmin role" />
+                            </form>
+
+                        }
+                    </div>
                 </td>
             </tr>
         }

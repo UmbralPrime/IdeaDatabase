@@ -234,5 +234,20 @@ namespace Idea_Database_Interface.Controllers
             ExportData export = new ExportData(bonos);
             return export.DownloadExcelDb();
         }
+        public IActionResult DeleteAll()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteAllConfirm()
+        {
+            IQueryable<Bonos> bonos = _uow.BonosRepository.GetAll();
+            foreach (var bono in bonos)
+            {
+                _uow.BonosRepository.Delete(bono);
+            }
+            await _uow.Save();
+            return RedirectToAction("Index");
+        }
     }
 }

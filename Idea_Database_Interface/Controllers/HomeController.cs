@@ -194,7 +194,7 @@ namespace Idea_Database_Interface.Controllers
                     };
                     _uow.EmpresaRepository.Update(empresa);
                     await _uow.Save();
-
+                    return RedirectToAction("Details", new { id = empresa.EmprId });
                 }
                 catch (DBConcurrencyException ex)
                 {
@@ -202,8 +202,7 @@ namespace Idea_Database_Interface.Controllers
                         return NotFound();
                     else
                         throw;
-                }
-                return RedirectToAction("DetailsAsync", new { id = id });
+                }                
             }
             return View(update);
         }
@@ -272,6 +271,7 @@ namespace Idea_Database_Interface.Controllers
         public async Task<IActionResult> CreateCorrespond(int id, CreateCorrespondViewModel model)
         {
             Empresa empr = await _uow.EmpresaRepository.GetById(id);
+            model.EmprId = id;
             if (empr == null)
                 return NotFound();
             if (ModelState.IsValid)
@@ -288,7 +288,7 @@ namespace Idea_Database_Interface.Controllers
                 return RedirectToAction("CorrespondOverview", new { id = id });
             }
             else
-                return BadRequest();
+                return View(model);
         }
         //update view of the clicked message
         public async Task<IActionResult> UpdateCorrespond(int id)

@@ -275,5 +275,6 @@ namespace Idea_Database_Interface.Controllers
             vm.Emprendedores.Categorías = _uow.EmprendedoresCategoriaRepository.GetAll().Where(p => p.IdEmprendedores == id).Include(i => i.Categoría).ToList();
             return RedirectToAction("Details", new { id = id });
         }
+        
     }
 }

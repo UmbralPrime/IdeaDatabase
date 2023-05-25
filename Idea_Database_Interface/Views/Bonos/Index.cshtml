@@ -27,10 +27,11 @@
                 </div>
             </div>
             <br />
-            <div class="row justify-content-md-center">
+            <div class="row justify-content-md-center">                
                 <a asp-action="CreateBono" class="btn col-md-3" style="background-color: darkorange; margin: 5px">Crear uno nuevo bono</a>
                 <a asp-action="Import" class="btn col-md-3" style="background-color: darkorange; margin: 5px">Importar datos</a>
                 <a asp-action="ExportDatabase" class="btn col-md-3" style="background-color: darkorange; margin: 5px">Exportar datos</a>
+                <a asp-action="DeleteAll" class="btn col-md-3 btn-danger" style="margin: 5px">Borrar todos los bonos</a>
                 <p class="text-end">Total: @Model.Bonos.TotalItemCount Bonos</p>
             </div>
         </div>
