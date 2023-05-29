@@ -20,8 +20,8 @@ namespace Idea_Database_Interface.Models
         public string? TarjetaNum { get; set; }
         public string? NúmeroId { get; set; }
         public string? NúmeroId2 { get; set; }
-        public string Localizador { get; set; }
-        public string Localidad { get; set; }
+        public string? Localizador { get; set; }
+        public string? Localidad { get; set; }
         public async Task<bool> EqualsAsync(object? obj)
         {
             if (obj == null) return false;

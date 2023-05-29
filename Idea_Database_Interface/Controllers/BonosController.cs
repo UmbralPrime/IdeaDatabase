@@ -31,7 +31,7 @@ namespace Idea_Database_Interface.Controllers
             options.Add("DNI");
             options.Add("Localizador");
             SelectList filterOptions = new SelectList(options);
-            IEnumerable<Bonos> bonos = _uow.BonosRepository.GetAll().ToList().OrderBy(x => x.Date);
+            IEnumerable<Bonos> bonos = _uow.BonosRepository.GetAll().OrderBy(x => x.Date);
 
             //filters based on the input of the searchstring and the selected filter
             //if the search string is empty it will just show all the companies
@@ -137,7 +137,7 @@ namespace Idea_Database_Interface.Controllers
                     Nombre = bono.Nombre,
                     PrimerApellido = bono.PrimerApellido,
                     DNI = bono.DNI,
-                    Date = bono.Date,
+                    Date = bono.Date + bono.Hours,
                     Direcction = bono.Direcction,
                     NumeroDeBonos = bono.NumeroDeBonos,
                     Correo = bono.Correo,
@@ -233,6 +233,13 @@ namespace Idea_Database_Interface.Controllers
             IQueryable<Bonos> bonos = _uow.BonosRepository.GetAll().Where(x=>x.Date>from&&x.Date<untill);
             ExportData export = new ExportData(bonos);
             return export.DownloadExcelDb();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ExportPdf(int id)
+        {
+            IQueryable<Bonos> bonos = _uow.BonosRepository.GetAll();
+            ExportData export = new ExportData(bonos);
+            return await export.PrintPdf(id);
         }
         public IActionResult DeleteAll()
         {

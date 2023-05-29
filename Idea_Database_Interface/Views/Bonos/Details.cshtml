@@ -21,3 +21,7 @@
 <br />
 <a class="btn" style="background-color: dodgerblue" asp-action="UpdateBono" asp-route-id="@Model.Bonos.Id">Actualizar datos</a>
 <a asp-action="DeleteBono" asp-route-id="@Model.Bonos.Id" class="btn btn-danger">Borrar registro</a>
+<form method="post" asp-action="ExportPdf">
+    <input name="id" type="hidden" value="@Model.Bonos.Id" />
+    <input type="submit" value="Exportar" class="btn btn-info" />
+</form>

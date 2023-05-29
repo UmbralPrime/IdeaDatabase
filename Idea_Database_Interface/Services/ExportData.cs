@@ -3,6 +3,7 @@ using Idea_Database_Interface.Models;
 using IronXL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using Syncfusion.Pdf.Parsing;
 using Syncfusion.XlsIO;
 
 namespace Idea_Database_Interface.Services
@@ -57,6 +58,44 @@ namespace Idea_Database_Interface.Services
                 fileStreamResult.FileDownloadName = "BaseDeDatos.xlsx";
                 return fileStreamResult;
             }
+        }
+        public async Task<IActionResult> PrintPdf(int id)
+        {
+            Bonos bono = _bonos.Where(x=>x.Id == id).FirstOrDefault();
+            FileStream fileStream = new FileStream("Data/PDFOutput.pdf",FileMode.Open,FileAccess.Read);
+            PdfLoadedDocument loadedDocument = new PdfLoadedDocument(fileStream);
+            PdfLoadedForm form = loadedDocument.Form;
+            if(bono != null)
+            {
+                (form.Fields[0] as PdfLoadedTextBoxField).Text = bono.Date.Hour.ToString();
+                (form.Fields["Minuto"] as PdfLoadedTextBoxField).Text = bono.Date.Minute.ToString();
+                (form.Fields["Nombre"] as PdfLoadedTextBoxField).Text = bono.Nombre;
+                (form.Fields["Apellido"] as PdfLoadedTextBoxField).Text = bono.PrimerApellido + " " + bono.SegunodApellido;
+                (form.Fields["Dia"] as PdfLoadedTextBoxField).Text = bono.Date.Day.ToString();
+                (form.Fields["Mesa"] as PdfLoadedTextBoxField).Text = bono.Date.Month.ToString();
+                (form.Fields["Año"] as PdfLoadedTextBoxField).Text = bono.Date.Year.ToString();
+                (form.Fields["Teléfono"] as PdfLoadedTextBoxField).Text = bono.Teléfono ?? "";
+                (form.Fields["NúmeroBono"] as PdfLoadedTextBoxField).Text = bono.NumeroDeBonos.ToString();
+                (form.Fields["TarjetaNúmero"] as PdfLoadedTextBoxField).Text = bono.TarjetaNum ?? "";
+                (form.Fields["Localizador"] as PdfLoadedTextBoxField).Text = bono.Localizador ?? "";
+                (form.Fields["Correo"] as PdfLoadedTextBoxField).Text = bono.Correo;
+                (form.Fields["DNI"] as PdfLoadedTextBoxField).Text = bono.DNI;
+                (form.Fields["númeroId1"] as PdfLoadedTextBoxField).Text = bono.NúmeroId ?? "";
+                (form.Fields["númeroId2"] as PdfLoadedTextBoxField).Text = bono.NúmeroId2 ?? "";
+                (form.Fields["númeroId2"] as PdfLoadedTextBoxField).Text = bono.NúmeroId2 ?? "";
+                (form.Fields["dirección"] as PdfLoadedTextBoxField).Text = bono.Direcction ?? "";                
+                (form.Fields["Código postal"] as PdfLoadedTextBoxField).Text = bono.CódigoPostal ?? "";                
+                (form.Fields["localidad"] as PdfLoadedTextBoxField).Text = bono.Localidad ?? "";                
+            }
+            MemoryStream stream = new MemoryStream();
+            loadedDocument.Save(stream);
+            stream.Position = 0;
+            loadedDocument.Close(true);
+            string contentType = "application/pdf";
+            string fileName = "output.pdf";
+            FileStreamResult fileStreamResult = new FileStreamResult(stream,contentType);
+            fileStreamResult.FileDownloadName = fileName;
+            return fileStreamResult;
         }
     }
 }
