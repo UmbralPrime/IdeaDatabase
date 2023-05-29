@@ -67,8 +67,8 @@ namespace Idea_Database_Interface.Services
             PdfLoadedForm form = loadedDocument.Form;
             if(bono != null)
             {
-                (form.Fields[0] as PdfLoadedTextBoxField).Text = bono.Date.Hour.ToString();
-                (form.Fields["Minuto"] as PdfLoadedTextBoxField).Text = bono.Date.Minute.ToString();
+                (form.Fields["Hora"] as PdfLoadedTextBoxField).Text = bono.Date.ToString("HH");
+                (form.Fields["Minuto"] as PdfLoadedTextBoxField).Text = bono.Date.ToString("mm");
                 (form.Fields["Nombre"] as PdfLoadedTextBoxField).Text = bono.Nombre;
                 (form.Fields["Apellido"] as PdfLoadedTextBoxField).Text = bono.PrimerApellido + " " + bono.SegunodApellido;
                 (form.Fields["Dia"] as PdfLoadedTextBoxField).Text = bono.Date.Day.ToString();

@@ -2,16 +2,15 @@
 @{
     ViewData["Title"] = "Comercio detalles ";
 }
-<h1>@Model.Comercio.NombreComercial</h1>
+<h1>@Model.Comercio.Nombre</h1>
 <br />
 <p>IAE: @Model.Comercio.IAE</p>
-<p>CIF: @Model.Comercio.CIF</p>
 <p>Código FUC: @Model.Comercio.CódigoFUC</p>
-<p>Dirección: @Model.Comercio.Calle @Model.Comercio.Número, @Model.Comercio.CódigoPostal @Model.Comercio.Provincia, @Model.Comercio.Municipio @Model.Comercio.Localidad</p>
+<p>Tipo de via: @Model.Comercio.TipoDeVia</p>
+<p>Dirección: @Model.Comercio.Dirección</p>
 <p>Teléfono Fijo: @Model.Comercio.TeléfonoFijo</p>
-<p>Email: @Model.Comercio.Email</p>
-<p>Móvi: @Model.Comercio.Móvi</p>
-<p>Pesrona de contacto: @Model.Comercio.Contacto</p>
+<p>Teléfono móvil: @Model.Comercio.TeléfonoMóvil</p>
+<p>Correo: @Model.Comercio.Correo</p>
 <br/>
 <a class="btn" style="background-color: dodgerblue" asp-action="UpdateComer" asp-route-id="@Model.Comercio.Id">Actualización</a>
 <a asp-action="DeleteComer" asp-route-id="@Model.Comercio.Id" class="btn btn-danger">Borrar</a>

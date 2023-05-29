@@ -2,7 +2,7 @@
 @{
 
 }
-<h2>Estás seguro de que quieres borrar el Comercio de @Model.Comercio.NombreComercial?</h2>
+<h2>Estás seguro de que quieres borrar el Comercio de @Model.Comercio.Nombre?</h2>
 <form asp-action="DeleteComer" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger" />
     <a asp-controller="Comercios" asp-action="Details" asp-route-id="@Model.Comercio.Id" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>

@@ -14,6 +14,7 @@ namespace Idea_Database_Interface.Data
         public DbSet<Categoría> Categorías { get; set; }
         public DbSet<EmprendedoresCategoría> EmprendedoresCategorías { get; set; }
         public DbSet<Comercios> Comercios { get; set; }
+        public DbSet<Targeta> Targetas { get; set; }
         public DbSet<CatYear> CatYear { get; set; }
         public DbSet<Bonos> Bonos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +26,7 @@ namespace Idea_Database_Interface.Data
             modelBuilder.Entity<Emprendedores>().ToTable("Emprendedores");
             modelBuilder.Entity<Categoría>().ToTable("Categorías");
             modelBuilder.Entity<Comercios>().ToTable("Comercios");
+            modelBuilder.Entity<Targeta>().ToTable("Targetas");
             modelBuilder.Entity<CatYear>().ToTable("CatYear");
             modelBuilder.Entity<Bonos>().ToTable("Bonos");
             modelBuilder.Entity<EmprendedoresCategoría>().ToTable("EmprendedoresCategorías");

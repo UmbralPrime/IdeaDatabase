@@ -4,6 +4,7 @@ using Idea_Database_Interface.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Idea_Database_Interface.Migrations
 {
     [DbContext(typeof(IdeaDBContext))]
-    partial class IdeaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230529093433_Added targeta and updated comercios")]
+    partial class Addedtargetaandupdatedcomercios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -349,48 +352,6 @@ namespace Idea_Database_Interface.Migrations
                     b.HasKey("EmprId");
 
                     b.ToTable("Empresas", "IdeaDatabase");
-                });
-
-            modelBuilder.Entity("Idea_Database_Interface.Models.Targeta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Correo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CódigoFUC")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Dirección")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IAE")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TeléfonoFijo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TeléfonoMóvil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TipoDeVia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Targetas", "IdeaDatabase");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

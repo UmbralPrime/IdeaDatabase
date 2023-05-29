@@ -1,7 +1,8 @@
 ﻿@{
 
 }
-<h2>Estás seguro de que quieres borrar todos los bones?</h2>
+<h2>Estás seguro de que quieres borrar todos los bonos?</h2>
+<p><i class="bi bi-exclamation-triangle-fill"></i>Realizando esta acción se eliminarán todos los datos y no se podrán recuperar.<i class="bi bi-exclamation-triangle-fill"></i></p>
 <form asp-action="DeleteAllConfirm" method="post">
     <a asp-controller="Bonos" asp-action="Index" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
     <input type="submit" value="Borrar todos" asp-action="DeleteAllConfirm" class="btn btn-danger" />

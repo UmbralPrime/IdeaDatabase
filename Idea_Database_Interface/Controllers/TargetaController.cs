@@ -1,22 +1,17 @@
 ﻿using Idea_Database_Interface.Data.UnitOfWork;
 using Idea_Database_Interface.Models;
 using Idea_Database_Interface.Viewmodels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using PagedList;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
+using System.Data;
 
 namespace Idea_Database_Interface.Controllers
 {
-    [Authorize(Roles = "admin")]
-    public class ComerciosController : Controller
+    public class TargetaController : Controller
     {
         private readonly IUnitOfWork _uow;
-        public ComerciosController(IUnitOfWork uow) { _uow = uow; }
+        public TargetaController(IUnitOfWork uow) { _uow = uow; }
         public IActionResult Index(string searchString, string filterSelect, int? page)
         {
             List<string> options = new();
@@ -24,7 +19,7 @@ namespace Idea_Database_Interface.Controllers
             options.Add("FUC");
             options.Add("Correo");
             SelectList filterOptions = new SelectList(options, filterSelect);
-            IEnumerable<Comercios> comercios = _uow.ComerciosRepository.GetAll();
+            IEnumerable<Targeta> targetas = _uow.TargetasRepository.GetAll();
 
             //filters based on the input of the searchstring and the selected filter
             //if the search string is empty it will just show all the companies
@@ -34,13 +29,13 @@ namespace Idea_Database_Interface.Controllers
                 switch (filterSelect)
                 {
                     case "Nombre":
-                        comercios = comercios.Where(x => x.Nombre.ToLower().Contains(searchString));
+                        targetas = targetas.Where(x => x.Nombre.ToLower().Contains(searchString));
                         break;
                     case "CIF":
-                        comercios = comercios.Where(x => x.CódigoFUC.Contains(searchString));
+                        targetas = targetas.Where(x => x.CódigoFUC.Contains(searchString));
                         break;
                     case "Email":
-                        comercios = comercios.Where(x => x.Correo.ToLower().Contains(searchString));
+                        targetas = targetas.Where(x => x.Correo.ToLower().Contains(searchString));
                         break;
                     default:
                         break;
@@ -51,13 +46,13 @@ namespace Idea_Database_Interface.Controllers
             int pageNumber = page ?? 1;
             int pageSize = 10;
             //this is to check if the pagenumber isnt higher than the pagecount
-            IPagedList testList = comercios.ToPagedList(1, pageSize);
+            IPagedList testList = targetas.ToPagedList(1, pageSize);
             if (testList.PageCount < pageNumber)
                 pageNumber = testList.PageCount;
             pageNumber = pageNumber < 1 ? 1 : pageNumber;
-            ComerciosListViewModel vm = new ComerciosListViewModel()
+            TargetaListViewModel vm = new TargetaListViewModel()
             {
-                Comercios = comercios.ToPagedList(pageNumber, pageSize),
+                Targetas = targetas.ToPagedList(pageNumber, pageSize),
                 FilterOptions = filterOptions,
                 PageCount = pageNumber,
                 SearchedFilter = filterSelect,
@@ -69,19 +64,18 @@ namespace Idea_Database_Interface.Controllers
             ModelState.Clear();
             return View(vm);
         }
-
-        public IActionResult CreateComer()
+        public IActionResult CreateTargeta()
         {
-            ComerciosCrudViewModel vm = new ComerciosCrudViewModel();
+            TargetaCrudViewModel vm = new TargetaCrudViewModel();
             return View(vm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateComer(ComerciosCrudViewModel model)
+        public async Task<IActionResult> CreateTargeta(TargetaCrudViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _uow.ComerciosRepository.Create(new Comercios()
+                _uow.TargetasRepository.Create(new Targeta()
                 {
                     Nombre = model.Nombre,
                     IAE = model.IAE,
@@ -99,16 +93,16 @@ namespace Idea_Database_Interface.Controllers
         }
         public async Task<IActionResult> Details(int id)
         {
-            ComercioDetailViewModel model = new ComercioDetailViewModel()
+            TargetaDetailViewModel model = new TargetaDetailViewModel()
             {
-                Comercio = await _uow.ComerciosRepository.GetById(id)
+                Targeta = await _uow.TargetasRepository.GetById(id)
             };
             return View(model);
         }
-        public async Task<IActionResult> UpdateComer(int id)
+        public async Task<IActionResult> UpdateTargeta(int id)
         {
-            Comercios model = await _uow.ComerciosRepository.GetById(id);
-            ComerciosCrudViewModel vm = new()
+            Targeta model = await _uow.TargetasRepository.GetById(id);
+            TargetaCrudViewModel vm = new()
             {
                 Id = id,
                 Nombre = model.Nombre,
@@ -124,14 +118,14 @@ namespace Idea_Database_Interface.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateComer(int id, ComerciosCrudViewModel model)
+        public async Task<IActionResult> UpdateTargeta(int id, TargetaCrudViewModel model)
         {
             model.Id = id;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    Comercios comercio = new Comercios()
+                    Targeta targeta = new Targeta()
                     {
                         Id = id,
                         Nombre = model.Nombre,
@@ -143,12 +137,12 @@ namespace Idea_Database_Interface.Controllers
                         TeléfonoFijo = model.TeléfonoFijo,
                         Correo = model.Correo
                     };
-                    _uow.ComerciosRepository.Update(comercio);
+                    _uow.TargetasRepository.Update(targeta);
                     await _uow.Save();
                 }
                 catch (DBConcurrencyException ex)
                 {
-                    if (await _uow.ComerciosRepository.GetById(id) == null)
+                    if (await _uow.TargetasRepository.GetById(id) == null)
                         return NotFound();
                     else
                         throw;
@@ -157,19 +151,19 @@ namespace Idea_Database_Interface.Controllers
             }
             return View(model);
         }
-        public async Task<IActionResult> DeleteComer(int id)
+        public async Task<IActionResult> DeleteTargeta(int id)
         {
-            ComercioDetailViewModel model = new ComercioDetailViewModel() { Comercio = await _uow.ComerciosRepository.GetById(id) };
+            TargetaDetailViewModel model = new TargetaDetailViewModel() { Targeta = await _uow.TargetasRepository.GetById(id) };
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComer(int id, ComercioDetailViewModel model)
+        public async Task<IActionResult> DeleteTargeta(int id, TargetaDetailViewModel model)
         {
-            Comercios comer = await _uow.ComerciosRepository.GetById(id);
-            if (comer != null)
+            Targeta targeta = await _uow.TargetasRepository.GetById(id);
+            if (targeta != null)
             {
-                _uow.ComerciosRepository.Delete(comer);
+                _uow.TargetasRepository.Delete(targeta);
                 await _uow.Save();
             }
             else
@@ -180,4 +174,3 @@ namespace Idea_Database_Interface.Controllers
         }
     }
 }
-

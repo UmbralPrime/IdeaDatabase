@@ -8,9 +8,9 @@
         <div asp-validation-summary="ModelOnly" class="text-danger" />
         <div class="col-md-8">
             <div class="form-group" style="padding: 10px">
-                <label asp-for="NombreComercial" class="control-label">Nombre comercial <span class="text-danger">*</span></label>
-                <input asp-for="NombreComercial" class="form-control" />
-                <span asp-validation-for="NombreComercial" class="text-danger"></span>
+                <label asp-for="Nombre" class="control-label">Nombre comercial <span class="text-danger">*</span></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
                 <label asp-for="IAE" class="control-label">IAE <span class="text-danger">*</span></label>
@@ -18,17 +18,12 @@
                 <span asp-validation-for="IAE" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Email" class="control-label">@Html.DisplayNameFor(model => this.Model.Email) <span class="text-danger">*</span></label>
-                <input type="email" asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="Correo" class="control-label">@Html.DisplayNameFor(model => this.Model.Correo) <span class="text-danger">*</span></label>
+                <input type="email" asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="CIF" class="control-label">@Html.DisplayNameFor(model => this.Model.CIF) <span class="text-danger">*</span></label>
-                <input asp-for="CIF" class="form-control" />
-                <span asp-validation-for="CIF" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding: 10px">
-                <label asp-for="CódigoFUC" class="control-label">Código FUC</label>
+                <label asp-for="CódigoFUC" class="control-label">Código FUC <span class="text-danger">*</span></label>
                 <input asp-for="CódigoFUC" class="form-control" />
                 <span asp-validation-for="CódigoFUC" class="text-danger"></span>
             </div>
@@ -38,55 +33,19 @@
                 <span asp-validation-for="TeléfonoFijo" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding: 10px">
-                <label asp-for="Móvi" class="control-label">@Html.DisplayNameFor(model => this.Model.Móvi) <span class="text-danger">*</span></label>
-                <input type="text" asp-for="Móvi" class="form-control" />
-                <span asp-validation-for="Móvi" class="text-danger"></span>
+                <label asp-for="TeléfonoMóvil" class="control-label">Teléfono Móvil</label>
+                <input type="text" asp-for="TeléfonoMóvil" class="form-control" />
+                <span asp-validation-for="TeléfonoMóvil" class="text-danger"></span>
             </div>
-            <div class="form-group row" style="padding: 10px">
-                <div class="col-md-6">
-                    <label asp-for="Calle" class="control-label">@Html.DisplayNameFor(model => this.Model.Calle)</label>
-                    <input asp-for="Calle" class="form-control" />
-                    <span asp-validation-for="Calle" class="text-danger"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Número" class="control-label">@Html.DisplayNameFor(model => this.Model.Número)</label>
-                    <input type="number" asp-for="Número" class="form-control" />
-                    <span asp-validation-for="Número" class="text-danger"></span>
-                </div>
+            <div class="form-group" style="padding: 10px">
+                <label asp-for="Dirección" class="control-label">@Html.DisplayNameFor(model => this.Model.Dirección) <span class="text-danger">*</span></label>
+                <input asp-for="Dirección" class="form-control" />
+                <span asp-validation-for="Dirección" class="text-danger"></span>
             </div>
-            <div class="form-group row" style="padding: 10px">
-                <div class="col-md-6">
-                    <label asp-for="CódigoPostal" class="control-label">@Html.DisplayNameFor(model => this.Model.CódigoPostal)</label>
-                    <input asp-for="CódigoPostal" class="form-control" />
-                    <span asp-validation-for="CódigoPostal" class="text-danger"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Provincia" class="control-label">@Html.DisplayNameFor(model => this.Model.Provincia)</label>
-                    <input asp-for="Provincia" class="form-control" />
-                    <span asp-validation-for="Provincia" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row" style="padding: 10px">
-                <div class="col-md-6">
-                    <label asp-for="Municipio" class="control-label">@Html.DisplayNameFor(model => this.Model.Municipio)</label>
-                    <input asp-for="Municipio" class="form-control" />
-                    <span asp-validation-for="Municipio" class="text-danger"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Localidad" class="control-label">@Html.DisplayNameFor(model => this.Model.Localidad)</label>
-                    <input asp-for="Localidad" class="form-control      />
-                    <span asp-validation-for="Localidad" class="text-danger"></span>
-                </div>
 
-                <div class="col-md-6">
-                    <label asp-for="Contacto" class="control-label">Persona de contacto</label>
-                    <input asp-for="Contacto" class="form-control        />
-                    <span asp-validation-for="Contacto" class="text-danger"></span>
-                </div>
-            </div>
             <br />
             <div class="form-group" style="padding: 10px">
-                <input type="submit" value="Actualizar" class="btn" style="background-color: aqua !important; color: white !important;" />
+                <input type="submit" value="Crear" class="btn" style="background-color: aqua !important; color: white !important;" />
                 <a asp-action="Index" class="btn" style="background-color: aqua !important; color: white !important;">Volver</a>
             </div>
         </div>

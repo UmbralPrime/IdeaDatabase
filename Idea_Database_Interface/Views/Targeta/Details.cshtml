@@ -1,0 +1,16 @@
+﻿@model Idea_Database_Interface.Viewmodels.TargetaDetailViewModel
+@{
+    ViewData["Title"] = "Targeta detalles ";
+}
+<h1>@Model.Targeta.Nombre</h1>
+<br />
+<p>IAE: @Model.Targeta.IAE</p>
+<p>Código FUC: @Model.Targeta.CódigoFUC</p>
+<p>Tipo de via: @Model.Targeta.TipoDeVia</p>
+<p>Dirección: @Model.Targeta.Dirección</p>
+<p>Teléfono Fijo: @Model.Targeta.TeléfonoFijo</p>
+<p>Teléfono móvil: @Model.Targeta.TeléfonoMóvil</p>
+<p>Correo: @Model.Targeta.Correo</p>
+<br />
+<a class="btn" style="background-color: dodgerblue" asp-action="UpdateTargeta" asp-route-id="@Model.Targeta.Id">Actualización</a>
+<a asp-action="DeleteTargeta" asp-route-id="@Model.Targeta.Id" class="btn btn-danger">Borrar</a>

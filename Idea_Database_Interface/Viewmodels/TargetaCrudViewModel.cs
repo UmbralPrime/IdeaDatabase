@@ -2,7 +2,7 @@
 
 namespace Idea_Database_Interface.Viewmodels
 {
-    public class ComerciosCrudViewModel
+    public class TargetaCrudViewModel
     {
         public int? Id { get; set; }
         [Required(ErrorMessage = "Este campo es obligatorio.")]
@@ -18,6 +18,5 @@ namespace Idea_Database_Interface.Viewmodels
         public string? TeléfonoFijo { get; set; }
         public string? TeléfonoMóvil { get; set; }
         public string? Correo { get; set; }
-        
     }
 }

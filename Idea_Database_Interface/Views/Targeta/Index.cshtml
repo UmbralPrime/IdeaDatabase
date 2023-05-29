@@ -1,4 +1,4 @@
-﻿@model Idea_Database_Interface.Viewmodels.ComerciosListViewModel
+﻿@model Idea_Database_Interface.Viewmodels.TargetaListViewModel
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -6,7 +6,7 @@
 }
 
 <div>
-    <h1 class="display-4">Establecimientos comerciales</h1>
+    <h1 class="display-4">Targeta Alzira</h1>
     <br />
     @using (Html.BeginForm())
     {
@@ -26,8 +26,8 @@
             </div>
             <br />
             <div class="row justify-content-md-center">
-                <a asp-action="CreateComer" class="btn col-md-3" style="background-color: darkorange">Crear uno nuevo comercio</a>
-                <p class="text-end">Total: @Model.Comercios.TotalItemCount Comercios</p>
+                <a asp-action="CreateTargeta" class="btn col-md-3" style="background-color: darkorange">Crear uno nuevo comercio</a>
+                <p class="text-end">Total: @Model.Targetas.TotalItemCount Targetas</p>
             </div>
         </div>
     }
@@ -37,14 +37,14 @@
                 <tr>
                     <th>Nombre comercial</th>
                     <th scope="col" class="d-none d-sm-table-cell">IAE</th>
-                    <th scope="col" class="d-none d-sm-table-cell">Teléfono móvil</th>
+                    <th scope="col" class="d-none d-sm-table-cell">Teléfono Móvil</th>
                     <th scope="col" class="d-none d-sm-table-cell">Correo</th>
                     <th scope="col" class="d-none d-sm-table-cell">FUC</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var comp in Model.Comercios)
+                @foreach (var comp in Model.Targetas)
                 {
                     <tr>
                         <td>@Html.DisplayFor(modelItem=>comp.Nombre)</td>
@@ -79,8 +79,8 @@
             }
         </div>
         <span style="margin: 5px">
-            Page @(Model.Comercios.PageCount
-            < Model.Comercios.PageNumber ? 0 : Model.Comercios.PageNumber) of @Model.Comercios.PageCount
+            Page @(Model.Targetas.PageCount
+            < Model.Targetas.PageNumber ? 0 : Model.Targetas.PageNumber) of @Model.Targetas.PageCount
         </span>
         <div style="margin: 5px">
             @using (Html.BeginForm(FormMethod.Get))
@@ -91,15 +91,15 @@
                 <input type="submit" value=">>" class="btn input-group btn-primary btn-sm" />
             }
         </div>
-        @if (Model.Comercios.PageCount > 1)
+        @if (Model.Targetas.PageCount > 1)
         {
             <div style="margin: 5px">
                 @using (Html.BeginForm(FormMethod.Get))
                 {
-                    @Html.Hidden("Page",Model.Comercios.PageCount)
+                    @Html.Hidden("Page",Model.Targetas.PageCount)
                     @Html.Hidden("SearchString",Model.SearchedString)
                     @Html.Hidden("FilterSelect", Model.SearchedFilter)
-                    <input type="submit" value="@Model.Comercios.PageCount" class="btn input-group btn-primary btn-sm" />
+                    <input type="submit" value="@Model.Targetas.PageCount" class="btn input-group btn-primary btn-sm" />
                 }
             </div>
         }
